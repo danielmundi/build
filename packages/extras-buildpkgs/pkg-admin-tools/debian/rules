@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+
+PKG_NAME=pkg-admin-tools
+
+PKG_PATH=debian/$(PKG_NAME)
+PKG_INSTALL_PATH=$(PKG_PATH)/usr/local/share/$(PKG_NAME)
+PKG_BINARY_PATH=$(PKG_PATH)/usr/local/sbin
+
+clean:
+	rm -rf $(PKG_PATH)/*
+
+build:
+	@#Do nothing
+
+binary:
+	mkdir -p $(PKG_PATH)
+	mkdir -p $(PKG_INSTALL_PATH)
+	mkdir -p $(PKG_BINARY_PATH)
+	# Copy files
+	cp pkg_admin.py $(PKG_INSTALL_PATH)
+	cp -r modules $(PKG_INSTALL_PATH)
+	cp README.md $(PKG_INSTALL_PATH)
+	cp version.txt $(PKG_INSTALL_PATH)
+	cp release_notes.txt $(PKG_INSTALL_PATH)
+	cp -r .git $(PKG_INSTALL_PATH)
+	cp .gitignore $(PKG_INSTALL_PATH)
+	# Create symlink to sbin
+	ln -s ../share/$(PKG_NAME)/pkg_admin.py $(PKG_BINARY_PATH)/pkg_admin
+	# Generate installer
+	dh_gencontrol
+	dh_builddeb

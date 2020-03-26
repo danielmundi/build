@@ -1,6 +1,7 @@
 ### Specific to building Armbian ###
 /.vagrant/
 ubuntu-*-cloudimg-console.log
+output
 
 ### to ignore changes in a working copy
 .ignore_changes
@@ -15,8 +16,8 @@ ubuntu-*-cloudimg-console.log
 /.tmp/
 /output/
 /cache/
-/*userpatches*/
-/userpatches
+#/*userpatches*/
+#/userpatches
 
 ### General annoyances ###
 .DS_Store

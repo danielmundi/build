@@ -1,0 +1,12 @@
+Source: pkg-admin-tools
+Section: devel
+Priority: optional
+Maintainer: Nigel Bowden <wifinigel@gmail.com>
+Build-Depends: debhelper (>= 9)
+
+Package: pkg-admin-tools
+Architecture: all
+Depends: python3
+Description: Package admin helper
+ This tool helps installing and updating
+ other WLAN Pi packages. 
