@@ -1,0 +1,5 @@
+pkg-admin-tools (0.1) experimental; urgency=medium
+
+  * Create debianization for packaging on .deb
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Tue, 24 Mar 2020 19:35:30 +0000
