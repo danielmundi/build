@@ -7,6 +7,7 @@ PKG_INSTALL_PATH=$(PKG_PATH)/usr/local/share/$(PKG_NAME)
 PKG_BINARY_PATH=$(PKG_PATH)/usr/local/sbin
 
 clean:
+	dh_clean
 	rm -rf $(PKG_PATH)/*
 
 build:

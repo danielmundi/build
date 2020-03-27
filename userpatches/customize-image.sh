@@ -41,9 +41,9 @@ Main() {
 } # Main
 
 InstallWLANPiApps() {
-	for app in $(pkg_admin -c | grep -v "---" | grep -v "Installer script started" | grep -v -e "^$")
+	for app in $(/usr/local/sbin/pkg_admin -c | grep -v -- '---' | grep -v 'Installer script started' | grep -v -e '^$')
 	do
-		pkg_admin -i $app
+		/usr/local/sbin/pkg_admin -i $app
 	done
 }
 
