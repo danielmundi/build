@@ -37,12 +37,21 @@ Main() {
 			;;
 	esac
 
+	AddUserWLANPi
 	InstallWLANPiApps
 } # Main
 
+AddUserWLANPi() {
+	echo Adding WLAN Pi user
+	useradd -m wlanpi
+	echo wlanpi:wlanpi | chpasswd
+}
+
 InstallWLANPiApps() {
+	echo Install pkg_admin modules
 	for app in $(/usr/local/sbin/pkg_admin -c | grep -v -- '---' | grep -v 'Installer script started' | grep -v -e '^$')
 	do
+		echo Install $app
 		/usr/local/sbin/pkg_admin -i $app
 	done
 }
