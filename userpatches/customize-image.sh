@@ -49,7 +49,7 @@ AddUserWLANPi() {
 
 InstallWLANPiApps() {
 	echo Install pkg_admin modules
-	for app in $(/usr/local/sbin/pkg_admin -c | grep -v -- '---' | grep -v 'Installer script started' | grep -v -e '^$')
+	for app in $(/usr/local/sbin/pkg_admin -c 2>/dev/null | sed -n '/---/,/---/p' | grep -v -- '---' | grep -v 'Installer script started' | grep -v -e '^$')
 	do
 		echo Install $app
 		/usr/local/sbin/pkg_admin -i $app
