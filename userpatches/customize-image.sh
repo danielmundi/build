@@ -37,6 +37,7 @@ Main() {
 			;;
 	esac
 
+	rm -f /root/.not_logged_in_yet
 	AddUserWLANPi
 	InstallWLANPiApps
 } # Main
