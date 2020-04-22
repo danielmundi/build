@@ -90,6 +90,7 @@ AddUserWLANPi() {
 	echo Adding WLAN Pi user
 	useradd -m wlanpi
 	echo wlanpi:wlanpi | chpasswd
+	usermod -aG sudo username
 }
 
 InstallWLANPiApps() {
