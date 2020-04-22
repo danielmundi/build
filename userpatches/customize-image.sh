@@ -38,9 +38,53 @@ Main() {
 	esac
 
 	rm -f /root/.not_logged_in_yet
+	SetDefaultShell
 	AddUserWLANPi
 	InstallWLANPiApps
+	SetupRNDIS
 } # Main
+
+SetDefaultShell() {
+  # Change default shell to bash
+  SHELL_BASH=$(which bash)
+  echo Found bash in $SHELL_BASH
+
+  sed -i "s|^SHELL=.*$|SHELL=${SHELL_BASH}|" /etc/default/useradd
+}
+
+SetupRNDIS() {
+	echo "options g_ether host_addr=5e:a4:f0:3e:31:d3 use_eem=0" >> /etc/modprobe.d/g_ether.conf
+
+	cat <<-EOF >> /etc/network/interfaces
+
+# USB Ethernet
+allow-hotplug usb0
+#iface usb0 inet dhcp
+iface usb0 inet static
+address 169.254.42.1
+netmask 255.255.255.224
+	EOF
+
+	cat <<-EOF > /etc/default/isc-dhcp-server
+DHCPDv4_CONF=/etc/dhcp/dhcpd.conf
+DHCPDv4_PID=/var/run/dhcpd.pid
+INTERFACESv4="usb0"
+	EOF
+
+	cat <<-EOF >> /etc/dhcp/dhcpd.conf
+# usb0 DHCP scope
+subnet 169.254.42.0 netmask 255.255.255.224 {
+  interface usb0;
+  range 169.254.42.2 169.254.42.30;
+  option domain-name-servers wlanpi.local;
+  option domain-name "wlanpi.local";
+  option routers 169.254.42.1;
+  option broadcast-address 169.254.42.31;
+  default-lease-time 600;
+  max-lease-time 7200;
+}
+	EOF
+}
 
 AddUserWLANPi() {
 	echo Adding WLAN Pi user
