@@ -40,7 +40,8 @@ Main() {
 	rm -f /root/.not_logged_in_yet
 	SetDefaultShell
 	AddUserWLANPi
-	InstallWLANPiApps
+	InstallMongoDB
+	#InstallWLANPiApps
 	SetupRNDIS
 } # Main
 
@@ -90,7 +91,7 @@ AddUserWLANPi() {
 	echo Adding WLAN Pi user
 	useradd -m wlanpi
 	echo wlanpi:wlanpi | chpasswd
-	usermod -aG sudo username
+	usermod -aG sudo wlanpi
 }
 
 InstallWLANPiApps() {
@@ -100,6 +101,22 @@ InstallWLANPiApps() {
 		echo Install $app
 		/usr/local/sbin/pkg_admin -i $app
 	done
+}
+
+InstallMongoDB() {
+  file_name="mongodb-src-r4.2.6"
+  prev_pwd=$PWD
+  cd /root/build
+  echo Download mongo
+  wget -nc https://fastdl.mongodb.org/src/$file_name.tar.gz
+  echo Unpack mongo
+  tar -zxvf $file_name.tar.gz
+  cd $file_name
+  echo Install requirements
+  python2 -m pip install -r buildscripts/requirements.txt
+  echo Build mongo
+  python2 buildscripts/scons.py core --ssl --use-s390x-crc32=off
+  cd $prev_pwd
 }
 
 InstallOpenMediaVault() {
