@@ -104,6 +104,8 @@ InstallWLANPiApps() {
 }
 
 InstallMongoDB() {
+  echo Install additional packages
+  apt-get -y install build-essential libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libboost-thread-dev libffi-dev curl libcurl4 libcurl4-openssl-dev
   file_name="mongodb-src-r4.2.6"
   prev_pwd=$PWD
   cd /root/build
@@ -113,10 +115,64 @@ InstallMongoDB() {
   tar -zxvf $file_name.tar.gz
   cd $file_name
   echo Install requirements
-  python2 -m pip install -r buildscripts/requirements.txt
+  python3 -m pip install wheel
+  python3 -m pip install -r buildscripts/requirements.txt
   echo Build mongo
-  python2 buildscripts/scons.py core --ssl --use-s390x-crc32=off
+  python3 buildscripts/scons.py core --ssl --use-hardware-crc32=off --d -j8
+  python3 buildscripts/scons.py --use-hardware-crc32=off --prefix=/opt/mongo install 
   cd $prev_pwd
+  rm -rf $file_name
+  rm -rf $file_name.tar.gz
+  echo Adding mongodb user
+  useradd -m mongodb
+  echo mongodb:mongodb | chpasswd
+  usermod -aG sudo mongodb
+  echo Creating /var/lib/mongodb and /var/log/mongodb
+  mkdir /var/lib/mongodb
+  mkdir /var/log/mongodb
+  echo Chowning folders mongodb:mongodb
+  chown mongodb:mongodb /var/lib/mongodb
+  chown mongodb:mongodb /var/log/mongodb
+  echo Creating /etc/mongodb.conf
+  cat > /etc/mongodb.conf <<_EOF
+# See http://www.mongodb.org/display/DOCS/File+Based+Configuration for format details
+# Run mongod --help to see a list of options
+ 
+bind_ip = 127.0.0.1
+quiet = true
+dbpath = /var/lib/mongodb
+logpath = /var/log/mongodb/mongod.log
+logappend = true
+ 
+noprealloc = true
+smallfiles = true
+_EOF
+  chown mongodb:mongodb /etc/mongodb.conf
+  touch /lib/systemd/system/mongodb.service
+  cat > /lib/systemd/system/mongodb.service <<_EOF
+[Unit]
+Description=An object/document-oriented database
+Documentation=man:mongod(1)
+After=network.target
+
+[Service]
+User=mongodb
+Group=mongodb
+RuntimeDirectory=mongodb
+RuntimeDirectoryMode=0755
+EnvironmentFile=-/etc/default/mongodb
+Environment=CONF=/etc/mongodb.conf
+Environment=SOCKETPATH=/run/mongodb
+ExecStart=/usr/bin/mongod --unixSocketPrefix=${SOCKETPATH} --config ${CONF} $DAEMON_OPTS
+
+[Install]
+WantedBy=multi-user.target
+_EOF
+  echo adding mongodb service to runtime
+  systemctl enable mongodb
+  strip -sg /opt/mongo/bin/mongod
+  strip -sg /opt/mongo/bin/mongo
+  strip -sg /opt/mongo/bin/mongos
 }
 
 InstallOpenMediaVault() {
