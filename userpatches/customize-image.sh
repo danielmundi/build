@@ -38,6 +38,10 @@ Main() {
 	esac
 
 	rm -f /root/.not_logged_in_yet
+
+	# Use common wlanX name for interfaces
+	sudo ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
+
 	SetDefaultShell
 	AddUserWLANPi
 	InstallMongoDB
