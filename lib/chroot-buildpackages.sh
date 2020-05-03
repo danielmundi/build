@@ -179,7 +179,8 @@ chroot_build_packages()
 				local needs_building=no
 				if [[ -n $package_install_target ]]; then
 					for f in $package_install_target; do
-						if [[ -z $(find $plugin_target_dir -name "${f}_*$REVISION*_$arch.deb") ]]; then
+						if [[ -z $(find $plugin_target_dir -name "${f}_*$REVISION*_$arch.deb") ]] &&
+						   [[ -z $(find $plugin_target_dir -name "${f}_*$REVISION*_all.deb") ]]; then
 							needs_building=yes
 							break
 						fi
