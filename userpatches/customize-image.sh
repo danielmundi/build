@@ -37,7 +37,7 @@ Main() {
 			;;
 	esac
 
-	rm -f /root/.not_logged_in_yet
+	SetupRootUser
 
 	# Use common wlanX name for interfaces
 	sudo ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
@@ -90,6 +90,15 @@ subnet 169.254.42.0 netmask 255.255.255.224 {
   max-lease-time 7200;
 }
 	EOF
+}
+
+SetupRootUser() {
+	rm -f /root/.not_logged_in_yet
+
+	# Set root password
+	echo "root:Wlanpi!" | chpasswd
+	# Disable root login
+	sed -i 's#\(root:.*\)/bin/bash#\1/sbin/nologin#g' /etc/passwd
 }
 
 AddUserWLANPi() {
