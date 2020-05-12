@@ -1,0 +1,5 @@
+fpms (0.1-1) UNRELEASED; urgency=low
+
+  * Debianize fpms package.
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Sun, 10 May 2020 01:01:54 -0300
