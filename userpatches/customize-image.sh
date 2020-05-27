@@ -44,19 +44,17 @@ Main() {
 
 	SetDefaultShell
 	AddUserWLANPi
-	#InstallMongoDB
-	#InstallWLANPiApps
 	SetupRNDIS
 	SetupOtherConfigFiles
 
 } # Main
 
 SetDefaultShell() {
-  # Change default shell to bash
-  SHELL_BASH=$(which bash)
-  echo Found bash in $SHELL_BASH
+	# Change default shell to bash
+	SHELL_BASH=$(which bash)
+	echo Found bash in $SHELL_BASH
 
-  sed -i "s|^SHELL=.*$|SHELL=${SHELL_BASH}|" /etc/default/useradd
+	sed -i "s|^SHELL=.*$|SHELL=${SHELL_BASH}|" /etc/default/useradd
 }
 
 SetupRNDIS() {
@@ -69,28 +67,28 @@ allow-hotplug usb0
 iface usb0 inet static
 address 169.254.42.1
 netmask 255.255.255.224
-	EOF
+EOF
 
 	cat <<-EOF > /etc/default/isc-dhcp-server
 DHCPDv4_CONF=/etc/dhcp/dhcpd.conf
 DHCPDv4_PID=/var/run/dhcpd.pid
 INTERFACESv4="usb0"
-	EOF
+EOF
 
 	cat <<-EOF >> /etc/dhcp/dhcpd.conf
 
 # usb0 DHCP scope
 subnet 169.254.42.0 netmask 255.255.255.224 {
-  interface usb0;
-  range 169.254.42.2 169.254.42.30;
-  option domain-name-servers wlanpi.local;
-  option domain-name "wlanpi.local";
-  option routers 169.254.42.1;
-  option broadcast-address 169.254.42.31;
-  default-lease-time 600;
-  max-lease-time 7200;
+	interface usb0;
+	range 169.254.42.2 169.254.42.30;
+	option domain-name-servers wlanpi.local;
+	option domain-name "wlanpi.local";
+	option routers 169.254.42.1;
+	option broadcast-address 169.254.42.31;
+	default-lease-time 600;
+	max-lease-time 7200;
 }
-	EOF
+EOF
 }
 
 SetupRootUser() {
@@ -134,28 +132,28 @@ SetupOtherConfigFiles() {
 }
 
 InstallMongoDB() {
-  file_name="mongodb-src-r4.2.6"
-  prev_pwd=$PWD
-  cd /root/build
+	file_name="mongodb-src-r4.2.6"
+	prev_pwd=$PWD
+	cd /root/build
 
-  echo Download mongo
-  wget -nc https://fastdl.mongodb.org/src/$file_name.tar.gz
+	echo Download mongo
+	wget -nc https://fastdl.mongodb.org/src/$file_name.tar.gz
 
-  echo Unpack mongo
-  tar -zxvf $file_name.tar.gz
-  cd $file_name
+	echo Unpack mongo
+	tar -zxvf $file_name.tar.gz
+	cd $file_name
 
-  echo Install requirements
-  python3 -m pip install wheel
-  python3 -m pip install -r buildscripts/requirements.txt
+	echo Install requirements
+	python3 -m pip install wheel
+	python3 -m pip install -r buildscripts/requirements.txt
 
-  echo Build mongo
-  python3 buildscripts/scons.py core --ssl CCFLAGS=-march=armv8-a+crc
+	echo Build mongo
+	python3 buildscripts/scons.py core --ssl CCFLAGS=-march=armv8-a+crc
 
-  echo Clean up build objects
-  cd ..
-  rm -rf $file_name
-  cd $prev_pwd
+	echo Clean up build objects
+	cd ..
+	rm -rf $file_name
+	cd $prev_pwd
 }
 
 Main "$@"
