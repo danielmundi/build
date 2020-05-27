@@ -47,6 +47,7 @@ Main() {
 	#InstallMongoDB
 	#InstallWLANPiApps
 	SetupRNDIS
+	SetupOtherConfigFiles
 
 } # Main
 
@@ -115,6 +116,21 @@ InstallWLANPiApps() {
 		echo Install $app
 		/usr/local/sbin/pkg_admin -i $app
 	done
+}
+
+SetupOtherConfigFiles() {
+	# Set retry for dhclient
+	if grep -q -E "^#?retry " /etc/dhcp/dhclient.conf; then
+		sed -i 's/^#\?retry .*/retry 15;/' /etc/dhcp/dhclient.conf
+	else
+		echo "retry 15;" >> /etc/dhcp/dhclient.conf
+	fi
+
+	# Set default DNS nameserver on resolveconf template
+	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
+
+	# Add our custom sudoers file
+	install -o root -g root -m 440 /tmp/overlay/etc/sudoers.d/wlanpidump /etc/sudoers.d
 }
 
 InstallMongoDB() {
