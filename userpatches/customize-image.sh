@@ -28,6 +28,7 @@ Main() {
 	SetupRNDIS
 	SetupOtherConfigFiles
 	InstallSpeedTest
+	InstallProfiler
 
 } # Main
 
@@ -47,6 +48,20 @@ SetupExternalRepos() {
 InstallSpeedTest() {
 	# Repo was included on SetupExternalRepos
 	apt -y --allow-unauthenticated install speedtest
+}
+
+InstallProfiler() {
+	git clone https://github.com/joshschmelzle/profiler2.git
+	cd profiler2
+
+	# install with pip (recommended)
+	python3 -m pip install .
+
+	cd ..
+	rm -rf profiler2
+
+	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
+	systemctl enable profiler
 }
 
 SetDefaultShell() {
