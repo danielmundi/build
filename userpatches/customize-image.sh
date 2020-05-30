@@ -17,26 +17,6 @@ BOARD=$3
 BUILD_DESKTOP=$4
 
 Main() {
-	case $RELEASE in
-		jessie)
-			# your code here
-			# InstallOpenMediaVault # uncomment to get an OMV 3 image
-			;;
-		xenial)
-			# your code here
-			;;
-		stretch)
-			# your code here
-			# InstallOpenMediaVault # uncomment to get an OMV 4 image
-			;;
-		buster)
-			# your code here
-			;;
-		bionic)
-			# your code here
-			;;
-	esac
-
 	SetupRootUser
 	SetupExternalRepos
 
