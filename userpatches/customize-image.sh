@@ -38,6 +38,7 @@ Main() {
 	esac
 
 	SetupRootUser
+	SetupExternalRepos
 
 	# Use common wlanX name for interfaces
 	sudo ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
@@ -46,8 +47,27 @@ Main() {
 	AddUserWLANPi
 	SetupRNDIS
 	SetupOtherConfigFiles
+	InstallSpeedTest
 
 } # Main
+
+# This sets up all external debian repos so we can call "apt update" only once here
+SetupExternalRepos() {
+	###### speedtest ######
+	export INSTALL_KEY=379CE192D401AB61
+	# Debian versions supported: jessie, stretch, buster
+	export DEB_DISTRO=$(lsb_release -sc)
+	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
+	echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee /etc/apt/sources.list.d/speedtest.list
+	###### speedtest ######
+
+	apt update
+}
+
+InstallSpeedTest() {
+	# Repo was included on SetupExternalRepos
+	apt -y --allow-unauthenticated install speedtest
+}
 
 SetDefaultShell() {
 	# Change default shell to bash
