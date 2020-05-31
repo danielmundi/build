@@ -135,6 +135,9 @@ AddUserWLANPi() {
 	useradd -m wlanpi
 	echo wlanpi:wlanpi | chpasswd
 	usermod -aG sudo wlanpi
+
+	# Include system binaries in wlanpi's PATH - avoid using sudo
+	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"' >> /home/wlanpi/.profile
 }
 
 InstallWLANPiApps() {
