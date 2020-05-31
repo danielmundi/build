@@ -30,6 +30,7 @@ Main() {
 	InstallSpeedTest
 	InstallProfiler
 	SetupCockpit
+	SetupOtherServices
 
 } # Main
 
@@ -147,6 +148,11 @@ InstallWLANPiApps() {
 		echo Install $app
 		/usr/local/sbin/pkg_admin -i $app
 	done
+}
+
+SetupOtherServices() {
+	##### iperf3 service #####
+	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf3.service /lib/systemd/system
 }
 
 SetupOtherConfigFiles() {
