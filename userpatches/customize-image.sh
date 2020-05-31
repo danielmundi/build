@@ -127,8 +127,12 @@ SetupRootUser() {
 
 	# Set root password
 	echo "root:Wlanpi!" | chpasswd
+
+	# Copy script to enable/disable root on demand to facilitate developement
+	install -o root -g root -m 744 /tmp/overlay/usr/bin/enableroot /usr/bin
+
 	# Disable root login
-	sed -i 's#\(root:.*\)/bin/bash#\1/sbin/nologin#g' /etc/passwd
+	enableroot 0
 }
 
 AddUserWLANPi() {
