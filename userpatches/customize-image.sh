@@ -70,14 +70,7 @@ SetupCockpit() {
 	systemctl enable cockpit.socket
 
 	# Open firewall port
-	is_service_known=$(firewall-offline-cmd --get-service | grep cockpit)
-	if [ -n "$is_service_known" ]; then
-		echo Cockpit is known by firewalld, add service
-		firewall-offline-cmd --add-service=cockpit
-	else
-		echo Cockpit is not known by firewalld, add port
-		firewall-offline-cmd --add-port=9090/tcp
-	fi
+	ufw allow 9090
 }
 
 SetDefaultShell() {
