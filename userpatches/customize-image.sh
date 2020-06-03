@@ -154,6 +154,9 @@ InstallWLANPiApps() {
 SetupOtherServices() {
 	##### iperf3 service #####
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf3.service /lib/systemd/system
+	ufw allow 5201
+	##### iperf2 service #####
+	ufw allow 5001
 }
 
 SetupOtherConfigFiles() {
