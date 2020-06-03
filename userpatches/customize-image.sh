@@ -37,19 +37,23 @@ Main() {
 # This sets up all external debian repos so we can call "apt update" only once here
 SetupExternalRepos() {
 	###### speedtest ######
-	export INSTALL_KEY=379CE192D401AB61
+	#export INSTALL_KEY=379CE192D401AB61
 	# Debian versions supported: jessie, stretch, buster
-	export DEB_DISTRO=$(lsb_release -sc)
-	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
-	echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee /etc/apt/sources.list.d/speedtest.list
+	#export DEB_DISTRO=$(lsb_release -sc)
+	#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
+	#echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee /etc/apt/sources.list.d/speedtest.list
 	###### speedtest ######
 
-	apt update
+	#apt update
+	echo No external repo currently used
 }
 
 InstallSpeedTest() {
 	# Repo was included on SetupExternalRepos
-	apt -y --allow-unauthenticated install speedtest
+	#apt -y --allow-unauthenticated install speedtest
+
+	# Install unofficial speedtest-cli from pip
+	python3 -m pip install speedtest-cli
 }
 
 InstallProfiler() {
