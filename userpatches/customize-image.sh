@@ -72,9 +72,6 @@ InstallProfiler() {
 SetupCockpit() {
 	# Enable service
 	systemctl enable cockpit.socket
-
-	# Open firewall port
-	ufw allow 9090
 }
 
 SetDefaultShell() {
@@ -154,9 +151,6 @@ InstallWLANPiApps() {
 SetupOtherServices() {
 	##### iperf3 service #####
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf3.service /lib/systemd/system
-	ufw allow 5201
-	##### iperf2 service #####
-	ufw allow 5001
 }
 
 SetupOtherConfigFiles() {
@@ -172,6 +166,9 @@ SetupOtherConfigFiles() {
 
 	# Add our custom sudoers file
 	install -o root -g root -m 440 /tmp/overlay/etc/sudoers.d/wlanpidump /etc/sudoers.d
+
+	# Copy ufw rules
+	install -o root -g root -m 640 /tmp/overlay/etc/ufw/user.rules /etc/ufw
 }
 
 InstallMongoDB() {
