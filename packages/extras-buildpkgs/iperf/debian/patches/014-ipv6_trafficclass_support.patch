@@ -1,0 +1,33 @@
+Description: IPv6 traffic class support
+ Here is patch that adds traffic class support for IPv6.
+ It's the same that TOS byte for IPv4, commandline key is the same -S.
+From: http://sourceforge.net/p/iperf/patches/25/
+Date: 2012-10-02
+
+Index: iperf-2.0.12+dfsg1/src/PerfSocket.cpp
+===================================================================
+--- iperf-2.0.12+dfsg1.orig/src/PerfSocket.cpp	2018-07-12 16:11:54.144347096 +0200
++++ iperf-2.0.12+dfsg1/src/PerfSocket.cpp	2018-07-12 16:11:54.140347074 +0200
+@@ -149,9 +149,19 @@
+     if ( inSettings->mTOS > 0 ) {
+         int  tos = inSettings->mTOS;
+         Socklen_t len = sizeof(tos);
+-        int rc = setsockopt( inSettings->mSock, IPPROTO_IP, IP_TOS,
+-                             (char*) &tos, len );
+-        WARN_errno( rc == SOCKET_ERROR, "setsockopt IP_TOS" );
++        if ( !isIPV6( inSettings ) )
++        {
++           // for IPv4
++           int rc = setsockopt( inSettings->mSock, IPPROTO_IP, IP_TOS,
++                                (char*) &tos, len );
++           WARN_errno( rc == SOCKET_ERROR, "setsockopt IP_TOS" );
++        } else
++        {
++           // for IPv6 (traffic class)
++           int rc = setsockopt( inSettings->mSock, IPPROTO_IPV6, IP_TOS,
++                                (char*) &tos, len );
++           WARN_errno( rc == SOCKET_ERROR, "setsockopt IPV6_TCLASS" );
++        }
+     }
+ #endif
+ 

@@ -1,0 +1,272 @@
+Description: fix hyphen used as minus sign in manpages
+Author: Roberto Lumbreras <rover@debian.org>
+
+Index: iperf-2.0.12+dfsg1/man/iperf.1
+===================================================================
+--- iperf-2.0.12+dfsg1.orig/man/iperf.1	2018-07-12 16:04:52.313997960 +0200
++++ iperf-2.0.12+dfsg1/man/iperf.1	2018-07-12 16:08:19.555152035 +0200
+@@ -2,21 +2,21 @@
+ .SH NAME
+ iperf \- perform network throughput tests
+ .SH SYNOPSIS
+-.B iperf -s [
++.B iperf \-s [
+ .I options
+ .B ]
+ 
+-.B iperf -c
++.B iperf \-c
+ .I server
+ .B [
+ .I options
+ .B ]
+ 
+-.B iperf -u -s [
++.B iperf \-u \-s [
+ .I options
+ .B ]
+ 
+-.B iperf -u -c
++.B iperf \-u \-c
+ .I server
+ .B [
+ .I options
+@@ -28,159 +28,159 @@
+ traffic).
+ .SH "GENERAL OPTIONS"
+ .TP
+-.BR -b ", " --bandwidth " "
++.BR \-b ", " \-\-bandwidth " "
+ set the target bandwidth (and optional standard devation where supported)
+ .TP
+-.BR -e ", " --enhanced " "
++.BR \-e ", " \-\-enhanced " "
+ Display enhanced output in reports otherwise use legacy report (ver 2.0.5) formatting (see notes)
+ .TP
+-.BR -f ", " --format " "
++.BR \-f ", " \-\-format " "
+ [abkmgBKMG]   format to report: adaptive, bits, Bytes, Kbits, Mbits, Gbits, KBytes, MBytes, GBytes (see NOTES for more)
+ .TP
+-.BR -h ", " --help " "
++.BR \-h ", " \-\-help " "
+ print a help synopsis
+ .TP
+-.BR -i ", " --interval " \fIn\fR"
++.BR \-i ", " \-\-interval " \fIn\fR"
+ pause \fIn\fR seconds between periodic bandwidth reports
+ .TP
+-.BR -l ", " --len " \fIn\fR[kmKM]"
++.BR \-l ", " \-\-len " \fIn\fR[kmKM]"
+ set read/write buffer size (TCP) or length (UDP) to \fIn\fR (TCP default 128K, UDP default 1470)
+ .TP
+-.BR "    --l2checks "
++.BR "    \-\-l2checks "
+ perform layer 2 length checks on received UDP packets (requires systems that support packet sockets, e.g. Linux)
+ .TP
+-.BR -m ", " --print_mss " "
+-print TCP maximum segment size (MTU - TCP/IP header)
++.BR \-m ", " \-\-print_mss " "
++print TCP maximum segment size (MTU \- TCP/IP header)
+ .TP
+-.BR -o ", " --output " \fIfilename\fR"
++.BR \-o ", " \-\-output " \fIfilename\fR"
+ output the report or error message to this specified file
+ .TP
+-.BR -p ", " --port " \fIn\fR"
++.BR \-p ", " \-\-port " \fIn\fR"
+ set server port to listen on/connect to to \fIn\fR (default 5001)
+ .TP
+-.BR -u ", " --udp " "
++.BR \-u ", " \-\-udp " "
+ use UDP rather than TCP
+ .TP
+-.BR "    --udp-counters-64bit "
++.BR "    \-\-udp-counters-64bit "
+ use 64 bit UDP sequence numbers
+ .TP
+-.BR -w ", " --window " \fIn\fR[kmKM]"
++.BR \-w ", " \-\-window " \fIn\fR[kmKM]"
+ TCP window size (socket buffer size)
+ .TP
+-.BR -z ", " --realtime " "
++.BR \-z ", " \-\-realtime " "
+ Request realtime scheduler, if supported.
+ .TP
+-.BR -B ", " --bind " \fIhost\fR"
++.BR \-B ", " \-\-bind " \fIhost\fR"
+ bind to \fIhost\fR, ip address or multicast address and optional port (see notes)
+ .TP
+-.BR -C ", " --compatibility " "
++.BR \-C ", " \-\-compatibility " "
+ for use with older versions does not sent extra msgs
+ .TP
+-.BR -M ", " --mss " \fIn\fR"
+-set TCP maximum segment size (MTU - 40 bytes)
++.BR \-M ", " \-\-mss " \fIn\fR"
++set TCP maximum segment size (MTU \- 40 bytes)
+ .TP
+-.BR -N ", " --nodelay " "
++.BR \-N ", " \-\-nodelay " "
+ set TCP no delay, disabling Nagle's Algorithm
+ .TP
+-.BR -v ", " --version " "
++.BR \-v ", " \-\-version " "
+ print version information and quit
+ .TP
+-.BR -x ", " --reportexclude " [CDMSV]"
++.BR \-x ", " \-\-reportexclude " [CDMSV]"
+ exclude C(connection) D(data) M(multicast) S(settings) V(server) reports
+ .TP
+-.BR -y ", " --reportstyle " C|c"
++.BR \-y ", " \-\-reportstyle " C|c"
+ if set to C or c report results as CSV (comma separated values)
+ .SH "SERVER SPECIFIC OPTIONS"
+ .TP
+-.BR -b ", " --bandwidth " \fIn\fR[kmgKMG]"
++.BR \-b ", " \-\-bandwidth " \fIn\fR[kmgKMG]"
+ set target read rate to \fIn\fR bits/sec. TCP only for the server.
+ .TP
+-.BR -s ", " --server " "
++.BR \-s ", " \-\-server " "
+ run in server mode
+ .TP
+-.BR "    --udp-histogram[="\fIbinwidth\fR[u],\fIbincount\fR,[\fIlowerci\fR],[\fIupperci\fR] "]"
++.BR "    \-\-udp-histogram[="\fIbinwidth\fR[u],\fIbincount\fR,[\fIlowerci\fR],[\fIupperci\fR] "]"
+ output UDP latency histograms, bin width (default 1 millisecond, append u for microseconds,) bincount is total bins (default 1000), ci is confidence interval between 0-100% (default lower 5%, upper 95%)
+ .TP
+-.BR -B ", " --bind " \fIip\fR | \fIip\fR%\fIdevice\fR"
++.BR \-B ", " \-\-bind " \fIip\fR | \fIip\fR%\fIdevice\fR"
+ bind src ip addr and optional src device for receiving
+ .TP
+-.BR -D ", " --daemon " "
++.BR \-D ", " \-\-daemon " "
+ run the server as a daemon.  On Windows this will also install the IPerfService.
+ .TP
+-.BR -H ", " --ssm-host " \fIhost\fR"
++.BR \-H ", " \-\-ssm-host " \fIhost\fR"
+ Set the source host (ip addr) per SSM multicast, i.e. the S of the S,G
+ .TP
+-.BR -R ", " --remove " "
++.BR \-R ", " \-\-remove " "
+ remove the IPerfService (Windows only).
+ .TP
+-.BR -U ", " --single_udp " "
++.BR \-U ", " \-\-single_udp " "
+ run in single threaded UDP mode
+ .TP
+-.BR -V ", " --ipv6_domain " "
++.BR \-V ", " \-\-ipv6_domain " "
+ Enable IPv6 reception by setting the domain and socket to AF_INET6 (Can receive on both IPv4 and IPv6)
+ .SH "CLIENT SPECIFIC OPTIONS"
+ .TP
+-.BR -b ", " --bandwidth " \fIn\fR[kmgKMG] | \fIn\fRpps"
++.BR \-b ", " \-\-bandwidth " \fIn\fR[kmgKMG] | \fIn\fRpps"
+ set target bandwidth to \fIn\fR bits/sec (default 1 Mbit/sec) or
+ \fIn\fR packets per sec.  This may be used with TCP or UDP.  For variable loads use format mean,standard deviation
+ .TP
+-.BR -c ", " --client " \fIhost\fR"
++.BR \-c ", " \-\-client " \fIhost\fR"
+ run in client mode, connecting to \fIhost\fR
+ .TP
+-.BR -d ", " --dualtest " "
++.BR \-d ", " \-\-dualtest " "
+ Do a bidirectional test simultaneously
+ .TP
+-.BR "    --incr-dstip"
++.BR "    \-\-incr-dstip"
+ increment the destination ip address when using the parallel (-P) option
+ .TP
+-.BR "    --ipg "\fIn\fR
+-set the interpacket gap to \fIn\fR (units of milliseconds) for packets within an isochronous frame (burst), requires --isochronous
++.BR "    \-\-ipg "\fIn\fR
++set the interpacket gap to \fIn\fR (units of milliseconds) for packets within an isochronous frame (burst), requires \-\-isochronous
+ .TP
+-.BR "    --isochronous[=" \fIfps\fR:\fImean\fR,\fIstdev\fR "]"
++.BR "    \-\-isochronous[=" \fIfps\fR:\fImean\fR,\fIstdev\fR "]"
+ send isochronous traffic with frequency frames per second and load defined by mean and standard deviation using a log normal distribution, defaults to 60:20m,0
+ .TP
+-.BR -n ", " --num " \fIn\fR[kmKM]"
+-number of bytes to transmit (instead of -t)
++.BR \-n ", " \-\-num " \fIn\fR[kmKM]"
++number of bytes to transmit (instead of \-t)
+ .TP
+-.BR -r ", " --tradeoff " "
++.BR \-r ", " \-\-tradeoff " "
+ Do a bidirectional test individually
+ .TP
+-.BR -t ", " --time " \fIn\fR"
++.BR \-t ", " \-\-time " \fIn\fR"
+ time in seconds to listen for new traffic connections, receive traffic or transmit traffic (Defaults: transmit is 10 secs while listen and receive are indefinite)
+ .TP
+-.BR "    --tx-sync "\fIn\fR
++.BR "    \-\-tx-sync "\fIn\fR
+ set the tx-sync interval to \fIn\fR (units of seconds) for synchronized packet writes
+ .TP
+-.BR -B ", " --bind " \fIip\fR | \fIip\fR:\fIport\fR | \fIipv6 -V\fR | \fI[ipv6]\fR:\fIport -V\fR"
++.BR \-B ", " \-\-bind " \fIip\fR | \fIip\fR:\fIport\fR | \fIipv6 \-V\fR | \fI[ipv6]\fR:\fIport \-V\fR"
+ bind src ip addr and optional port as the source of traffic (see notes)
+ .TP
+-.BR -F ", " --fileinput " \fIname\fR"
++.BR \-F ", " \-\-fileinput " \fIname\fR"
+ input the data to be transmitted from a file
+ .TP
+-.BR -I ", " --stdin " "
++.BR \-I ", " \-\-stdin " "
+ input the data to be transmitted from stdin
+ .TP
+-.BR -L ", " --listenport " \fIn\fR"
++.BR \-L ", " \-\-listenport " \fIn\fR"
+ port to receive bidirectional tests back on
+ .TP
+-.BR -P ", " --parallel " \fIn\fR"
++.BR \-P ", " \-\-parallel " \fIn\fR"
+ number of parallel client threads to run
+ .TP
+-.BR -R ", " --reverse " "
++.BR \-R ", " \-\-reverse " "
+ reverse the traffic flow after header exchange, useful for testing through firewalls
+ .TP
+-.BR -S ", " --tos " "
++.BR \-S ", " \-\-tos " "
+ set the socket's IP_TOS (byte) field
+ .TP
+-.BR -T ", " --ttl " \fIn\fR"
++.BR \-T ", " \-\-ttl " \fIn\fR"
+ time-to-live, for multicast (default 1)
+-.BR -V ", " --ipv6_domain " "
++.BR \-V ", " \-\-ipv6_domain " "
+ Set the domain to IPv6 (send packets over IPv6)
+ .TP
+-.BR -X ", " --peerdetect " "
++.BR \-X ", " \-\-peerdetect " "
+ run server version detection prior to traffic.
+ .TP
+-.BR -Z ", " --linux-congestion " \fIalgo\fR"
++.BR \-Z ", " \-\-linux-congestion " \fIalgo\fR"
+ set TCP congestion control algorithm (Linux only)
+ .SH ENVIRONMENT
+ .TP
+@@ -189,11 +189,11 @@
+ .SH NOTES
+ Some numeric options support format characters per '<value>\fIc\fR' (e.g. 10M) where the \fIc\fR format characters are k,m,g,K,M,G.  Lowercase format characters are 10^3 based and uppercase are 2^n based, e.g. 1k = 1000, 1K = 1024, 1m = 1,000,000 and 1M = 1,048,576
+ .TP
+-The -b option supports variable offered loads through the <mean>,<standard deviation> format, e.g. -b 100m,10m on the client.  The distribution used is log normal.  Similar for the isochronous option.
++The \-b option supports variable offered loads through the <mean>,<standard deviation> format, e.g. \-b 100m,10m on the client.  The distribution used is log normal.  Similar for the isochronous option.
+ .TP
+-The -e or --enhanced latency output on the UDP servers assumes the clients' and servers' system clocks are synchronized.  Network Time Protocol (NTP) or Precision Time Protocol (PTP) are commonly used for this.  The reference clock(s) or oscillator's error will also affect the accuracy of UDP latency measurements.
++The \-e or \-\-enhanced latency output on the UDP servers assumes the clients' and servers' system clocks are synchronized.  Network Time Protocol (NTP) or Precision Time Protocol (PTP) are commonly used for this.  The reference clock(s) or oscillator's error will also affect the accuracy of UDP latency measurements.
+ .TP
+-The -B option affects the bind() system call.  This is typically used to bind to a particular IP address. Only packets destined to that IP address will be received while any transmitted packets will carry that IP address as their source. The bind() does not control anything about the routing of transmitted packets. So, for example, if the IP address of eth0 is used for -B and the routing table for the destination IP address (per -c) resolves the output interface to be eth1, then the host will send the packet out device eth1 with the source IP address of eth0.  To affect the physical output interface (e.g. dual homed systems) the host's routing table(s) need to be configured, e.g. configure policy routing per each -B source address.
++The \-B option affects the bind() system call.  This is typically used to bind to a particular IP address. Only packets destined to that IP address will be received while any transmitted packets will carry that IP address as their source. The bind() does not control anything about the routing of transmitted packets. So, for example, if the IP address of eth0 is used for \-B and the routing table for the destination IP address (per \-c) resolves the output interface to be eth1, then the host will send the packet out device eth1 with the source IP address of eth0.  To affect the physical output interface (e.g. dual homed systems) the host's routing table(s) need to be configured, e.g. configure policy routing per each \-B source address.
+ .SH DIAGNOSTICS
+ This section needs to be filled in.
+ .SH BUGS
+@@ -205,7 +205,7 @@
+ Kevin Gibbs,
+ John Estabrook <jestabro at ncsa.uiuc.edu>,
+ Andrew Gallatin <gallatin at gmail.com>,
+-Stephen Hemminger <shemminger at linux-foundation.org>,
++Stephen Hemminger <shemminger at linux\-foundation.org>,
+ Tim Auckland,
+ Robert J. McMahon <rjmcmahon at rjmcmahon.com>
+ .SH "SEE ALSO"

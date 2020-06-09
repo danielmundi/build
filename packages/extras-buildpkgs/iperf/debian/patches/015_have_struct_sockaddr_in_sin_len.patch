@@ -1,0 +1,20 @@
+Description: iperf does not compile on kfreebsd-amd64
+ kfreebsd-amd64 has struct sockaddr_in.sin_len, but for ipv6 is sin6_len:
+ Listener.cpp:517:11: error: 'struct sockaddr_in6' has no member named 'sin_len'; did you mean 'sin6_len'?
+ Listener.cpp:517:28: error: 'struct sockaddr_in6' has no member named 'sin_len'; did you mean 'sin6_len'?
+Author: Roberto Lumbreras <rover@debian.org>
+Forwarded: https://sourceforge.net/p/iperf2/tickets/44/
+
+Index: iperf-2.0.12+dfsg1/src/Listener.cpp
+===================================================================
+--- iperf-2.0.12+dfsg1.orig/src/Listener.cpp	2018-06-19 23:07:59.000000000 +0200
++++ iperf-2.0.12+dfsg1/src/Listener.cpp	2018-07-13 08:44:17.669952605 +0200
+@@ -514,7 +514,7 @@
+ 		FAIL_errno( rc != 1, "mcast v6 join source group pton",mSettings );
+ 		source->sin6_port = 0;    /* Ignored */
+ #ifdef HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+-		source->sin_len = group->sin_len;
++		source->sin6_len = group->sin6_len;
+ #endif
+ 		rc = setsockopt(mSettings->mSock,IPPROTO_IPV6,MCAST_JOIN_SOURCE_GROUP, &group_source_req,
+ 			    sizeof(group_source_req));

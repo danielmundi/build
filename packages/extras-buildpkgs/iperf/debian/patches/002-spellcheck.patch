@@ -1,0 +1,45 @@
+Description: fix typos
+Author: Roberto Lumbreras <rover@debian.org>
+
+Index: iperf-2.0.12+dfsg1/man/iperf.1
+===================================================================
+--- iperf-2.0.12+dfsg1.orig/man/iperf.1	2018-07-12 18:33:00.198714301 +0200
++++ iperf-2.0.12+dfsg1/man/iperf.1	2018-07-12 18:33:05.066740287 +0200
+@@ -161,7 +161,7 @@
+ input the data to be transmitted from stdin
+ .TP
+ .BR -L ", " --listenport " \fIn\fR"
+-port to recieve bidirectional tests back on
++port to receive bidirectional tests back on
+ .TP
+ .BR -P ", " --parallel " \fIn\fR"
+ number of parallel client threads to run
+@@ -193,13 +193,13 @@
+ .TP
+ The -e or --enhanced latency output on the UDP servers assumes the clients' and servers' system clocks are synchronized.  Network Time Protocol (NTP) or Precision Time Protocol (PTP) are commonly used for this.  The reference clock(s) or oscillator's error will also affect the accuracy of UDP latency measurements.
+ .TP
+-The -B option affects the bind() system call.  This is typically used to bind to a particular IP address. Only packets destined to that IP address will be received while any transmitted packets will carry that IP address as their source. The bind() does not control anything about the routing of transmitted packets. So, for example, if the IP address of eth0 is used for -B and the routing table for the destination IP address (per -c) resolves the ouput interface to be eth1, then the host will send the packet out device eth1 with the source IP address of eth0.  To affect the physical output interface (e.g. dual homed systems) the host's routing table(s) need to be configured, e.g. configure policy routing per each -B source address.
++The -B option affects the bind() system call.  This is typically used to bind to a particular IP address. Only packets destined to that IP address will be received while any transmitted packets will carry that IP address as their source. The bind() does not control anything about the routing of transmitted packets. So, for example, if the IP address of eth0 is used for -B and the routing table for the destination IP address (per -c) resolves the output interface to be eth1, then the host will send the packet out device eth1 with the source IP address of eth0.  To affect the physical output interface (e.g. dual homed systems) the host's routing table(s) need to be configured, e.g. configure policy routing per each -B source address.
+ .SH DIAGNOSTICS
+ This section needs to be filled in.
+ .SH BUGS
+ See https://sourceforge.net/p/iperf2/tickets/
+ .SH AUTHORS
+-Iperf2, based from iperf (originally written by Mark Gates and Alex Warshavsky), has a goal of maintainence with some feature enhancement.
++Iperf2, based from iperf (originally written by Mark Gates and Alex Warshavsky), has a goal of maintenance with some feature enhancement.
+ Other contributions from Ajay Tirumala, Jim Ferguson, Jon Dugan <jdugan at x1024 dot net>,
+ Feng Qin,
+ Kevin Gibbs,
+Index: iperf-2.0.12+dfsg1/src/Client.cpp
+===================================================================
+--- iperf-2.0.12+dfsg1.orig/src/Client.cpp	2018-07-12 18:33:00.198714301 +0200
++++ iperf-2.0.12+dfsg1/src/Client.cpp	2018-07-12 18:33:00.194714279 +0200
+@@ -1032,7 +1032,7 @@
+ 		if (ntohl(ack.typelen.type) == CLIENTHDRACK && ntohl(ack.typelen.length) == sizeof(client_hdr_ack)) {
+ 		    reporter_peerversion (mSettings, ntohl(ack.version_u), ntohl(ack.version_l));
+ 		} else {
+-		    sprintf(mSettings->peerversion, " (misformed server version)");
++		    sprintf(mSettings->peerversion, " (malformed server version)");
+ 		}
+ 	    } else {
+ 		WARN_errno(1, "recvack" );
