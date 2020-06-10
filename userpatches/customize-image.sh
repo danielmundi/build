@@ -27,8 +27,12 @@ Main() {
 	AddUserWLANPi
 	SetupRNDIS
 	SetupOtherConfigFiles
-	InstallSpeedTest
-	InstallProfiler
+	SetupPipxEnviro
+	InstallPipx
+	# InstallSpeedTest
+	InstallSpeedTestPipx
+	# InstallProfiler
+	InstallProfilerPipx
 	SetupCockpit
 	SetupOtherServices
 
@@ -48,12 +52,31 @@ SetupExternalRepos() {
 	echo No external repo currently used
 }
 
+SetupPipxEnviro() {
+	mkdir -p /opt/wlanpi/pipx/bin
+	chown -R root:sudo /opt/wlanpi/pipx
+	chmod -R g+rwx /opt/wlanpi/pipx
+	cat <<EOF >> /etc/environment
+PIPX_HOME=/opt/wlanpi/pipx
+PIPX_BIN_DIR=/opt/wlanpi/pipx/bin
+EOF
+}
+
+InstallPipx() {
+	python3 -m pip install pipx
+}
+
 InstallSpeedTest() {
 	# Repo was included on SetupExternalRepos
 	#apt -y --allow-unauthenticated install speedtest
 
 	# Install unofficial speedtest-cli from pip
 	python3 -m pip install speedtest-cli
+}
+
+InstallSpeedTestPipx() {
+	# Install unofficial speedtest-cli from pip via pipx
+	pipx install --include-deps speedtest-cli
 }
 
 InstallProfiler() {
@@ -66,6 +89,12 @@ InstallProfiler() {
 	cd ..
 	rm -rf profiler2
 
+	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
+}
+
+InstallProfilerPipx() {
+	# install with pip via pipx
+	pipx install git+https://github.com/joshschmelzle/profiler2.git@0.0.1.dev6#egg=profiler2
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
 }
 
