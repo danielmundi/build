@@ -174,7 +174,7 @@ SetupOtherConfigFiles() {
 	sed -i '/start)/a ufw enable' /usr/lib/armbian/armbian-firstrun
 
 	# Include wlanpi release file
-	install -o root -g root -m 644 /tmp/overlay/etc/wlanpi-release
+	install -o root -g root -m 644 /tmp/overlay/etc/wlanpi-release /etc/wlanpi-release
 }
 
 InstallMongoDB() {
