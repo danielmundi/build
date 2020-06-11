@@ -30,6 +30,7 @@ Main() {
 	InstallSpeedTest
 	InstallProfiler
 	SetupCockpit
+	SetupWebGUI
 	SetupOtherServices
 
 } # Main
@@ -146,6 +147,16 @@ AddUserWLANPi() {
 
 	display_alert "Include system binaries in wlanpi's PATH - avoid using sudo" "" "info"
 	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"' >> /home/wlanpi/.profile
+}
+
+SetupWebGUI() {
+	display_alert "Setup WebGUI" "" "info"
+
+	git clone https://github.com/WLAN-Pi/wfe_v2.git
+	cp -ra wfe_v2/site/* /var/www/html
+	rm -rf wfe_v2
+
+	chown -R www-data:www-data /var/www/html
 }
 
 InstallWLANPiApps() {
