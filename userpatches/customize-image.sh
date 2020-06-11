@@ -172,6 +172,9 @@ SetupOtherServices() {
 	display_alert "Setup service" "iperf3" "info"
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf3.service /lib/systemd/system
 	systemctl enable iperf3
+
+	display_alert "Setup service" "iperf2" "info"
+	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf2.service /lib/systemd/system
 }
 
 SetupOtherConfigFiles() {
