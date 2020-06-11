@@ -204,6 +204,9 @@ SetupOtherConfigFiles() {
 	usermod -a -G tftp wlanpi
 	chown -R root:tftp /srv/tftp
 	chmod 775 /srv/tftp
+
+	display_alert "Generate locale" "en_US.UTF-8" "info"
+	locale-gen --purge en_US.UTF-8
 }
 
 InstallMongoDB() {
