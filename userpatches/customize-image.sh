@@ -199,6 +199,11 @@ SetupOtherConfigFiles() {
 
 	display_alert "Include wlanpi release file" "" "info"
 	install -o root -g root -m 644 /tmp/overlay/etc/wlanpi-release /etc/wlanpi-release
+
+	display_alert "Setup" "TFTP" "info"
+	usermod -a -G tftp wlanpi
+	chown -R root:tftp /srv/tftp
+	chmod 775 /srv/tftp
 }
 
 InstallMongoDB() {
