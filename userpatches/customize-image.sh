@@ -170,7 +170,11 @@ SetupOtherConfigFiles() {
 	# Copy ufw rules
 	install -o root -g root -m 640 /tmp/overlay/etc/ufw/user.rules /etc/ufw
 
+	# Enable UFW on first boot script
 	sed -i '/start)/a ufw enable' /usr/lib/armbian/armbian-firstrun
+
+	# Include wlanpi release file
+	install -o root -g root -m 644 /tmp/overlay/etc/wlanpi-release
 }
 
 InstallMongoDB() {
