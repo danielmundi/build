@@ -54,6 +54,7 @@ SetupExternalRepos() {
 }
 
 SetupPipxEnviro() {
+	# Setting up Pipx in a global directory so all users in sudo group can access installed packages
 	mkdir -p /opt/wlanpi/pipx/bin
 	chown -R root:sudo /opt/wlanpi/pipx
 	chmod -R g+rwx /opt/wlanpi/pipx
