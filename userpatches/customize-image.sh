@@ -100,7 +100,7 @@ InstallProfiler() {
 
 InstallProfilerPipx() {
 	# install with pip via pipx
-	pipx install --include-deps git+https://github.com/joshschmelzle/profiler2.git@0.0.1.dev6#egg=profiler2
+	pipx install --include-deps git+https://github.com/joshschmelzle/profiler2.git@0.1.dev6#egg=profiler2
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
 }
 
