@@ -1,7 +1,7 @@
 # iperf2
 local package_name="iperf"
 local package_repo="https://git.code.sf.net/p/iperf2/code"
-local package_ref="commit:9634b2929b8f06d32a73f338b8753462dcf3e597"
+local package_ref="commit:41bfc67a9d2c654c360953575ee5160ee4d798e7"
 #local package_upstream_version="2.0.12"
 local package_builddeps="cdbs patchutils debhelper"
 local package_install_target="iperf"

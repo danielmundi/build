@@ -20,7 +20,7 @@ Main() {
 	SetupRootUser
 	SetupExternalRepos
 
-	# Use common wlanX name for interfaces
+	display_alert "Use common wlanX name for interfaces" "" "info"
 	sudo ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
 
 	SetDefaultShell
@@ -34,6 +34,7 @@ Main() {
 	# InstallProfiler
 	InstallProfilerPipx
 	SetupCockpit
+	SetupWebGUI
 	SetupOtherServices
 
 } # Main
@@ -49,7 +50,7 @@ SetupExternalRepos() {
 	###### speedtest ######
 
 	#apt update
-	echo No external repo currently used
+	display_alert "No external repo currently used" "" "info"
 }
 
 SetupPipxEnviro() {
@@ -67,6 +68,8 @@ InstallPipx() {
 }
 
 InstallSpeedTest() {
+	display_alert "Install speedtest-cli" "" "info"
+
 	# Repo was included on SetupExternalRepos
 	#apt -y --allow-unauthenticated install speedtest
 
@@ -80,6 +83,8 @@ InstallSpeedTestPipx() {
 }
 
 InstallProfiler() {
+	display_alert "Install profiler2" "" "info"
+
 	git clone https://github.com/joshschmelzle/profiler2.git
 	cd profiler2
 
@@ -99,6 +104,8 @@ InstallProfilerPipx() {
 }
 
 SetupCockpit() {
+	display_alert "Setup cockpit" "" "info"
+
 	# Enable service
 	systemctl enable cockpit.socket
 }
@@ -106,12 +113,14 @@ SetupCockpit() {
 SetDefaultShell() {
 	# Change default shell to bash
 	SHELL_BASH=$(which bash)
-	echo Found bash in $SHELL_BASH
+	display_alert "Setting default bash" "$SHELL_BASH" "info"
 
 	sed -i "s|^SHELL=.*$|SHELL=${SHELL_BASH}|" /etc/default/useradd
 }
 
 SetupRNDIS() {
+	display_alert "Setup RNDIS" "" "info"
+
 	echo "options g_ether host_addr=5e:a4:f0:3e:31:d3 use_eem=0" > /etc/modprobe.d/g_ether.conf
 
 	cat <<-EOF >> /etc/network/interfaces
@@ -146,60 +155,87 @@ EOF
 }
 
 SetupRootUser() {
+	display_alert "Setup root user options" "" "info"
 	rm -f /root/.not_logged_in_yet
 
-	# Set root password
+	display_alert "Set root password" "" "info"
 	echo "root:Wlanpi!" | chpasswd
 
-	# Copy script to enable/disable root on demand to facilitate developement
+	display_alert "Copy script to enable/disable root on demand to facilitate developement" "" "info"
 	install -o root -g root -m 744 /tmp/overlay/usr/bin/enableroot /usr/bin
 
-	# Disable root login
+	display_alert "Disable root login" "" "info"
 	enableroot 0
 }
 
 AddUserWLANPi() {
-	echo Adding WLAN Pi user
+	display_alert "Adding WLAN Pi user" "" "info"
 	useradd -m wlanpi
 	echo wlanpi:wlanpi | chpasswd
 	usermod -aG sudo wlanpi
 
-	# Include system binaries in wlanpi's PATH - avoid using sudo
+	display_alert "Include system binaries in wlanpi's PATH - avoid using sudo" "" "info"
 	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"' >> /home/wlanpi/.profile
 }
 
+SetupWebGUI() {
+	display_alert "Setup WebGUI" "" "info"
+
+	git clone https://github.com/WLAN-Pi/wfe_v2.git
+	cp -ra wfe_v2/site/* /var/www/html
+	rm -rf wfe_v2
+
+	chown -R www-data:www-data /var/www/html
+}
+
 InstallWLANPiApps() {
-	echo Install pkg_admin modules
+	display_alert "Install pkg_admin modules" "" "info"
 	for app in $(/usr/local/sbin/pkg_admin -c 2>/dev/null | sed -n '/---/,/---/p' | grep -v -- '---' | grep -v 'Installer script started' | grep -v -e '^$')
 	do
-		echo Install $app
+		display_alert "Install" "$app" "info"
 		/usr/local/sbin/pkg_admin -i $app
 	done
 }
 
 SetupOtherServices() {
-	##### iperf3 service #####
+	display_alert "Setup service" "iperf3" "info"
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf3.service /lib/systemd/system
+	systemctl enable iperf3
+
+	display_alert "Setup service" "iperf2" "info"
+	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf2.service /lib/systemd/system
 }
 
 SetupOtherConfigFiles() {
-	# Set retry for dhclient
+	display_alert "Set retry for dhclient" "" "info"
 	if grep -q -E "^#?retry " /etc/dhcp/dhclient.conf; then
 		sed -i 's/^#\?retry .*/retry 15;/' /etc/dhcp/dhclient.conf
 	else
 		echo "retry 15;" >> /etc/dhcp/dhclient.conf
 	fi
 
-	# Set default DNS nameserver on resolveconf template
+	display_alert "Set default DNS nameserver on resolveconf template" "" "info"
 	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
 
-	# Add our custom sudoers file
+	display_alert "Add our custom sudoers file" "" "info"
 	install -o root -g root -m 440 /tmp/overlay/etc/sudoers.d/wlanpidump /etc/sudoers.d
 
-	# Copy ufw rules
+	display_alert "Copy ufw rules" "" "info"
 	install -o root -g root -m 640 /tmp/overlay/etc/ufw/user.rules /etc/ufw
 
+	display_alert "Enable UFW on first boot script" "" "info"
 	sed -i '/start)/a ufw enable' /usr/lib/armbian/armbian-firstrun
+
+	display_alert "Include wlanpi release file" "" "info"
+	install -o root -g root -m 644 /tmp/overlay/etc/wlanpi-release /etc/wlanpi-release
+
+	display_alert "Setup" "TFTP" "info"
+	usermod -a -G tftp wlanpi
+	chown -R root:tftp /srv/tftp
+	chmod 775 /srv/tftp
+
+	display_alert "Generate locale" "en_US.UTF-8" "info"
+	locale-gen --purge en_US.UTF-8
 }
 
 InstallMongoDB() {
@@ -207,24 +243,59 @@ InstallMongoDB() {
 	prev_pwd=$PWD
 	cd /root/build
 
-	echo Download mongo
+	display_alert "Download mongo" "" "info"
 	wget -nc https://fastdl.mongodb.org/src/$file_name.tar.gz
 
-	echo Unpack mongo
+	display_alert "Unpack mongo" "" "info"
 	tar -zxvf $file_name.tar.gz
 	cd $file_name
 
-	echo Install requirements
+	display_alert "Install requirements" "" "info"
 	python3 -m pip install wheel
 	python3 -m pip install -r buildscripts/requirements.txt
 
-	echo Build mongo
+	display_alert "Build mongo" "" "info"
 	python3 buildscripts/scons.py core --ssl CCFLAGS=-march=armv8-a+crc
 
-	echo Clean up build objects
+	display_alert "Clean up build objects" "" "info"
 	cd ..
 	rm -rf $file_name
 	cd $prev_pwd
+}
+
+#########
+# Let's have unique way of displaying alerts
+# Copied from Armbian build to standardize prints
+#########
+display_alert()
+{
+	# log function parameters to install.log
+	[[ -n $DEST ]] && echo "Displaying message: $@" >> $DEST/debug/output.log
+
+	local tmp=""
+	[[ -n $2 ]] && tmp="[\e[0;33m $2 \x1B[0m]"
+
+	case $3 in
+		err)
+		echo -e "[\e[0;31m error \x1B[0m] $1 $tmp"
+		;;
+
+		wrn)
+		echo -e "[\e[0;35m warn \x1B[0m] $1 $tmp"
+		;;
+
+		ext)
+		echo -e "[\e[0;32m o.k. \x1B[0m] \e[1;32m$1\x1B[0m $tmp"
+		;;
+
+		info)
+		echo -e "[\e[0;32m o.k. \x1B[0m] $1 $tmp"
+		;;
+
+		*)
+		echo -e "[\e[0;32m .... \x1B[0m] $1 $tmp"
+		;;
+	esac
 }
 
 Main "$@"
