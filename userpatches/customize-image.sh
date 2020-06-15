@@ -94,7 +94,7 @@ InstallProfiler() {
 
 InstallProfilerPipx() {
 	# install with pip via pipx
-	pipx install git+https://github.com/joshschmelzle/profiler2.git@0.0.1.dev6#egg=profiler2
+	pipx install --include-deps git+https://github.com/joshschmelzle/profiler2.git@0.0.1.dev6#egg=profiler2
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
 }
 
@@ -165,7 +165,7 @@ AddUserWLANPi() {
 	usermod -aG sudo wlanpi
 
 	# Include system binaries in wlanpi's PATH - avoid using sudo
-	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"' >> /home/wlanpi/.profile
+	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/opt/wlanpi/pipx/bin"' >> /home/wlanpi/.profile
 }
 
 InstallWLANPiApps() {
