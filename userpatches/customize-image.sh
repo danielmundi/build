@@ -80,6 +80,8 @@ InstallSpeedTest() {
 
 InstallSpeedTestPipx() {
 	# Install unofficial speedtest-cli from pip via pipx
+	export PIPX_HOME=/opt/wlanpi/pipx
+	export PIPX_BIN_DIR=/opt/wlanpi/pipx/bin
 	pipx install --include-deps speedtest-cli
 }
 
@@ -100,6 +102,8 @@ InstallProfiler() {
 
 InstallProfilerPipx() {
 	# install with pip via pipx
+	export PIPX_HOME=/opt/wlanpi/pipx
+	export PIPX_BIN_DIR=/opt/wlanpi/pipx/bin
 	pipx install --include-deps git+https://github.com/joshschmelzle/profiler2.git@0.1.dev6#egg=profiler2
 	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
 }
@@ -176,7 +180,7 @@ AddUserWLANPi() {
 	usermod -aG sudo wlanpi
 
 	display_alert "Include system binaries in wlanpi's PATH - avoid using sudo" "" "info"
-	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"' >> /home/wlanpi/.profile
+	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/opt/wlanpi/pipx/bin"' >> /home/wlanpi/.profile
 }
 
 SetupWebGUI() {
