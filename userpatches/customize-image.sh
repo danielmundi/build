@@ -29,9 +29,7 @@ Main() {
 	SetupOtherConfigFiles
 	SetupPipxEnviro
 	InstallPipx
-	# InstallSpeedTest
 	InstallSpeedTestPipx
-	# InstallProfiler
 	InstallProfilerPipx
 	SetupCockpit
 	SetupWebGUI
@@ -62,45 +60,25 @@ SetupPipxEnviro() {
 PIPX_HOME=/opt/wlanpi/pipx
 PIPX_BIN_DIR=/opt/wlanpi/pipx/bin
 EOF
+	# Set pipx variables for the remainder of the script
+	export PIPX_HOME=/opt/wlanpi/pipx
+	export PIPX_BIN_DIR=/opt/wlanpi/pipx/bin
 }
 
 InstallPipx() {
-	python3 -m pip install pipx
-}
-
-InstallSpeedTest() {
-	display_alert "Install speedtest-cli" "" "info"
-
-	# Repo was included on SetupExternalRepos
-	#apt -y --allow-unauthenticated install speedtest
-
-	# Install unofficial speedtest-cli from pip
-	python3 -m pip install speedtest-cli
+	# Install a deterministic version of pipx
+	python3 -m pip install pipx==0.15.4.0
 }
 
 InstallSpeedTestPipx() {
+	display_alert "Install speedtest-cli" "" "info"
 	# Install unofficial speedtest-cli from pip via pipx
-	export PIPX_HOME=/opt/wlanpi/pipx
-	export PIPX_BIN_DIR=/opt/wlanpi/pipx/bin
+
 	pipx install --include-deps speedtest-cli
 }
 
-InstallProfiler() {
-	display_alert "Install profiler2" "" "info"
-
-	git clone https://github.com/joshschmelzle/profiler2.git
-	cd profiler2
-
-	# install with pip (recommended)
-	python3 -m pip install .
-
-	cd ..
-	rm -rf profiler2
-
-	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
-}
-
 InstallProfilerPipx() {
+	display_alert "Install profiler2" "" "info"
 	# install with pip via pipx
 	export PIPX_HOME=/opt/wlanpi/pipx
 	export PIPX_BIN_DIR=/opt/wlanpi/pipx/bin
@@ -180,7 +158,9 @@ AddUserWLANPi() {
 	usermod -aG sudo wlanpi
 
 	display_alert "Include system binaries in wlanpi's PATH - avoid using sudo" "" "info"
-	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin:/opt/wlanpi/pipx/bin"' >> /home/wlanpi/.profile
+	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"' >> /home/wlanpi/.profile
+	display_alert "Include pipx bin location in wlanpi's PATH" "" "info"
+	echo 'export PATH="$PATH:/opt/wlanpi/pipx/bin"' >> /home/wlanpi/.profile
 }
 
 SetupWebGUI() {
@@ -224,6 +204,9 @@ SetupOtherConfigFiles() {
 
 	display_alert "Add our custom sudoers file" "" "info"
 	install -o root -g root -m 440 /tmp/overlay/etc/sudoers.d/wlanpidump /etc/sudoers.d
+
+	display_alert "Add our pipx sudoers file for profiler" "" "info"
+	install -o root -g root -m 440 /tmp/overlay/etc/sudoers.d/pipx /etc/sudoers.d
 
 	display_alert "Copy ufw rules" "" "info"
 	install -o root -g root -m 640 /tmp/overlay/etc/ufw/user.rules /etc/ufw
