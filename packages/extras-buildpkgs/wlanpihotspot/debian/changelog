@@ -1,0 +1,5 @@
+wlanpihotspot (0.05-1) experimental; urgency=low
+
+  * Debianize wlanpihotspot package.
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Wed, 17 Jun 2020 08:56:00 -0300

@@ -1,0 +1,14 @@
+Source: wlanpihotspot
+Section: embedded
+Priority: extra
+Maintainer: Daniel Finimundi <daniel@finimundi.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/WLAN-Pi/wlanpihotspot.git
+
+Package: wlanpihotspot
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Hotspot mode for the WLAN Pi
+ Configuration files and mode swticher to enable
+ hotspot mode on a WLAN Pi.
