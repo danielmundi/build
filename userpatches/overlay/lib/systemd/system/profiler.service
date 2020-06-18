@@ -4,4 +4,4 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/local/bin/profiler
+ExecStart=/opt/wlanpi/pipx/bin/profiler
