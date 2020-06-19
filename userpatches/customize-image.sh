@@ -71,7 +71,7 @@ InstallProfiler() {
 	cd ..
 	rm -rf profiler2
 
-	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/profiler.service /lib/systemd/system
+	copy_overlay /lib/systemd/system/profiler.service -o root -g root -m 644
 }
 
 SetupCockpit() {
@@ -133,7 +133,7 @@ SetupRootUser() {
 	echo "root:Wlanpi!" | chpasswd
 
 	display_alert "Copy script to enable/disable root on demand to facilitate developement" "" "info"
-	install -o root -g root -m 744 /tmp/overlay/usr/bin/enableroot /usr/bin
+	copy_overlay /usr/bin/enableroot -o root -g root -m 744
 
 	display_alert "Disable root login" "" "info"
 	enableroot 0
@@ -144,6 +144,7 @@ AddUserWLANPi() {
 	useradd -m wlanpi
 	echo wlanpi:wlanpi | chpasswd
 	usermod -aG sudo wlanpi
+	usermod -aG www-data wlanpi
 
 	display_alert "Include system binaries in wlanpi's PATH - avoid using sudo" "" "info"
 	echo 'export PATH="$PATH:/usr/local/sbin:/usr/sbin:/sbin"' >> /home/wlanpi/.profile
@@ -170,11 +171,11 @@ InstallWLANPiApps() {
 
 SetupOtherServices() {
 	display_alert "Setup service" "iperf3" "info"
-	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf3.service /lib/systemd/system
+	copy_overlay /lib/systemd/system/iperf3.service -o root -g root -m 644
 	systemctl enable iperf3
 
 	display_alert "Setup service" "iperf2" "info"
-	install -o root -g root -m 644 /tmp/overlay/lib/systemd/system/iperf2.service /lib/systemd/system
+	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
 }
 
 SetupOtherConfigFiles() {
@@ -189,16 +190,16 @@ SetupOtherConfigFiles() {
 	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
 
 	display_alert "Add our custom sudoers file" "" "info"
-	install -o root -g root -m 440 /tmp/overlay/etc/sudoers.d/wlanpidump /etc/sudoers.d
+	copy_overlay /etc/sudoers.d/wlanpidump -o root -g root -m 440
 
 	display_alert "Copy ufw rules" "" "info"
-	install -o root -g root -m 640 /tmp/overlay/etc/ufw/user.rules /etc/ufw
+	copy_overlay /etc/ufw/user.rules -o root -g root -m 640
 
 	display_alert "Enable UFW on first boot script" "" "info"
 	sed -i '/start)/a ufw enable' /usr/lib/armbian/armbian-firstrun
 
 	display_alert "Include wlanpi release file" "" "info"
-	install -o root -g root -m 644 /tmp/overlay/etc/wlanpi-release /etc/wlanpi-release
+	copy_overlay /etc/wlanpi-release -o root -g root -m 644
 
 	display_alert "Setup" "TFTP" "info"
 	usermod -a -G tftp wlanpi
@@ -232,6 +233,17 @@ InstallMongoDB() {
 	cd ..
 	rm -rf $file_name
 	cd $prev_pwd
+}
+
+# Usage: copy_overlay <FILE_TO_COPY> [-o <owner>] [-g <group>] [-m <perms>]
+copy_overlay() {
+	OVERLAY_DIR="/tmp/overlay"
+	INSTALL_FILE="$1"
+
+	# Remove file from arguments
+	shift
+
+	install $@ "$OVERLAY_DIR$INSTALL_FILE" "$INSTALL_FILE"
 }
 
 #########
