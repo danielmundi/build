@@ -1,0 +1,5 @@
+wconsole (0.08-1) experimental; urgency=low
+
+  * Debianize wconsole package.
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Thu, 18 Jun 2020 22:55:43 -0300

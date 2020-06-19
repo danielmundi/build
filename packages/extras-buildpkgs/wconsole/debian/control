@@ -1,0 +1,14 @@
+Source: wconsole
+Section: embedded
+Priority: extra
+Maintainer: Daniel Finimundi <daniel@finimundi.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/WLAN-Pi/wconsole.git
+
+Package: wconsole
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Wireless serial console cable
+ Allows WLAN Pi to proxy a serial cable over to
+ a WLAN link.
