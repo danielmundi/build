@@ -208,6 +208,9 @@ SetupOtherConfigFiles() {
 
 	display_alert "Copy config file" "avahi-daemon" "info"
 	copy_overlay /etc/avahi/avahi-daemon.conf -o root -g root -m 644
+
+	display_alert "Copy config file" "wpa_supplicant.conf" "info"
+	copy_overlay /etc/wpa_supplicant/wpa_supplicant.conf -o root -g root -m 600
 }
 
 InstallMongoDB() {
