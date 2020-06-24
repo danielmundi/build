@@ -176,6 +176,12 @@ SetupOtherServices() {
 
 	display_alert "Setup service" "iperf2" "info"
 	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
+
+	display_alert "Disable service" "NetworkManager" "info"
+	systemctl disable NetworkManager.service
+	systemctl disable NetworkManager-wait-online.service
+	systemctl disable NetworkManager-dispatcher.service
+	systemctl disable network-manager.service
 }
 
 SetupOtherConfigFiles() {
