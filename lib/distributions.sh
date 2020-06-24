@@ -258,13 +258,13 @@ install_common()
 	fi
 
 	# install armbian-firmware
-	if [[ "${REPOSITORY_INSTALL}" != *armbian-firmware* ]]; then
-		if [[ -f ${DEB_STORAGE}/armbian-firmware_${REVISION}_all.deb ]]; then
-			install_deb_chroot "${DEB_STORAGE}/armbian-firmware_${REVISION}_all.deb"
+	if [[ "${REPOSITORY_INSTALL}" != *armbian-firmware-full* ]]; then
+		if [[ -f ${DEB_STORAGE}/armbian-firmware-full_${REVISION}_all.deb ]]; then
+			install_deb_chroot "${DEB_STORAGE}/armbian-firmware-full_${REVISION}_all.deb"
 		fi
 	else
-		display_alert "Installing from repository" "armbian-firmware"
-		chroot "${SDCARD}" /bin/bash -c "apt -y -qq install armbian-firmware" >> "${DEST}"/debug/install.log 2>&1
+		display_alert "Installing from repository" "armbian-firmware-full"
+		chroot "${SDCARD}" /bin/bash -c "apt -y -qq install armbian-firmware-full" >> "${DEST}"/debug/install.log 2>&1
 	fi
 
 	# install armbian-config
