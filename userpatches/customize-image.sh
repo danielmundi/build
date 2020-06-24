@@ -208,9 +208,6 @@ SetupOtherConfigFiles() {
 
 	display_alert "Copy config file" "avahi-daemon" "info"
 	copy_overlay /etc/avahi/avahi-daemon.conf -o root -g root -m 644
-
-	display_alert "Generate locale" "en_US.UTF-8" "info"
-	locale-gen --purge en_US.UTF-8
 }
 
 InstallMongoDB() {
