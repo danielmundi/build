@@ -217,6 +217,28 @@ SetupOtherConfigFiles() {
 
 	display_alert "Copy config file" "wpa_supplicant.conf" "info"
 	copy_overlay /etc/wpa_supplicant/wpa_supplicant.conf -o root -g root -m 600
+
+	display_alert "Setup network interface" "eth0 wlan0" "info"
+	cat <<-EOF >> /etc/network/interfaces
+
+# Default eth0 as DHCP
+auto eth0
+allow-hotplug eth0
+iface eth0 inet dhcp
+
+# wlan0 configuration
+auto wlan0
+allow-hotplug wlan0
+iface wlan0 inet dhcp
+#address 192.168.0.100
+#netmask 255.255.255.0
+#gateway 192.168.0.1
+#dns-nameservers 8.8.8.8 8.8.4.4
+wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
+wireless-mode Monitor
+# Disable power saving on compatible chipsets (prevents SSH/connection dropouts over WiFi)
+wireless-power off
+EOF
 }
 
 InstallMongoDB() {
