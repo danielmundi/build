@@ -94,21 +94,13 @@ SetupRNDIS() {
 
 	echo "options g_ether host_addr=5e:a4:f0:3e:31:d3 use_eem=0" > /etc/modprobe.d/g_ether.conf
 
-	cat <<-EOF >> /etc/network/interfaces
+	display_alert "Copy interfaces overlay" "rndis.conf" "info"
+	copy_overlay /etc/network/interfaces.d/rndis.conf -o root -g root -m 644
 
-# USB Ethernet
-allow-hotplug usb0
-iface usb0 inet static
-address 169.254.42.1
-netmask 255.255.255.224
-EOF
+	display_alert "Copy overlay" "isc-dhcp-server" "info"
+	copy_overlay /etc/default/isc-dhcp-server -o root -g root -m 644
 
-	cat <<-EOF > /etc/default/isc-dhcp-server
-DHCPDv4_CONF=/etc/dhcp/dhcpd.conf
-DHCPDv4_PID=/var/run/dhcpd.pid
-INTERFACESv4="usb0"
-EOF
-
+	display_alert "Configure DHCP" "dhcpd.conf" "info"
 	cat <<-EOF >> /etc/dhcp/dhcpd.conf
 
 # usb0 DHCP scope
@@ -218,25 +210,8 @@ SetupOtherConfigFiles() {
 	display_alert "Copy config file" "wpa_supplicant.conf" "info"
 	copy_overlay /etc/wpa_supplicant/wpa_supplicant.conf -o root -g root -m 600
 
-	display_alert "Setup network interface" "eth0 wlan0" "info"
-	cat <<-EOF >> /etc/network/interfaces
-
-# Default eth0 as DHCP
-allow-hotplug eth0
-iface eth0 inet dhcp
-
-# wlan0 configuration
-allow-hotplug wlan0
-iface wlan0 inet dhcp
-#address 192.168.0.100
-#netmask 255.255.255.0
-#gateway 192.168.0.1
-#dns-nameservers 8.8.8.8 8.8.4.4
-wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
-wireless-mode Monitor
-# Disable power saving on compatible chipsets (prevents SSH/connection dropouts over WiFi)
-wireless-power off
-EOF
+	display_alert "Copy config file" "network/interfaces" "info"
+	copy_overlay /etc/network/interfaces -o root -g root -m 644
 
 	display_alert "Change default systemd boot target" "multi-user.target" "info"
 	systemctl set-default multi-user.target
