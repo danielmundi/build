@@ -237,6 +237,9 @@ wireless-mode Monitor
 # Disable power saving on compatible chipsets (prevents SSH/connection dropouts over WiFi)
 wireless-power off
 EOF
+
+	display_alert "Change default systemd boot target" "multi-user.target" "info"
+	systemctl set-default multi-user.target
 }
 
 InstallMongoDB() {
