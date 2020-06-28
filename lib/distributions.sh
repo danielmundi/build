@@ -298,7 +298,6 @@ install_common()
 
 	# copy boot splash images
 	cp "${SRC}"/packages/blobs/splash/armbian-u-boot.bmp "${SDCARD}"/boot/boot.bmp
-	cp "${SRC}"/packages/blobs/splash/armbian-desktop.png "${SDCARD}"/boot/boot-desktop.png
 
 	# execute $LINUXFAMILY-specific tweaks
 	[[ $(type -t family_tweaks) == function ]] && family_tweaks
@@ -426,6 +425,9 @@ install_common()
 
 	# nsswitch settings for sane DNS behavior: remove resolve, assure libnss-myhostname support
 	sed "s/hosts\:.*/hosts:          files mymachines dns myhostname/g" -i "${SDCARD}"/etc/nsswitch.conf
+
+	# build logo in any case
+	boot_logo
 
 }
 
