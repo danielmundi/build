@@ -222,12 +222,10 @@ SetupOtherConfigFiles() {
 	cat <<-EOF >> /etc/network/interfaces
 
 # Default eth0 as DHCP
-auto eth0
 allow-hotplug eth0
 iface eth0 inet dhcp
 
 # wlan0 configuration
-auto wlan0
 allow-hotplug wlan0
 iface wlan0 inet dhcp
 #address 192.168.0.100
