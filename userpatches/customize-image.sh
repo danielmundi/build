@@ -38,7 +38,7 @@ Main() {
 # This sets up all external debian repos so we can call "apt update" only once here
 SetupExternalRepos() {
 	display_alert "Include apt repo" "WLAN Pi" "info"
-	echo "deb [trusted=yes] https://dfinimundi.fury.land/apt/ /" | sudo tee /etc/apt/sources.list.d/wlanpi.list
+	echo "deb [trusted=yes] https://dfinimundi.fury.land/apt/ /" > /etc/apt/sources.list.d/wlanpi.list
 
 	apt update
 }
