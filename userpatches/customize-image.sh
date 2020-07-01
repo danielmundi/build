@@ -37,16 +37,10 @@ Main() {
 
 # This sets up all external debian repos so we can call "apt update" only once here
 SetupExternalRepos() {
-	###### speedtest ######
-	#export INSTALL_KEY=379CE192D401AB61
-	# Debian versions supported: jessie, stretch, buster
-	#export DEB_DISTRO=$(lsb_release -sc)
-	#sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $INSTALL_KEY
-	#echo "deb https://ookla.bintray.com/debian ${DEB_DISTRO} main" | sudo tee /etc/apt/sources.list.d/speedtest.list
-	###### speedtest ######
+	display_alert "Include apt repo" "WLAN Pi" "info"
+	echo "deb [trusted=yes] https://dfinimundi.fury.land/apt/ /" | sudo tee /etc/apt/sources.list.d/wlanpi.list
 
-	#apt update
-	display_alert "No external repo currently used" "" "info"
+	apt update
 }
 
 InstallSpeedTest() {
