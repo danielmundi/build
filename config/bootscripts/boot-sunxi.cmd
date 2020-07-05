@@ -35,6 +35,15 @@ if test -e ${devtype} ${devnum} ${prefix}armbianEnv.txt; then
 	env import -t ${load_addr} ${filesize}
 fi
 
+if test "${boot_ums}" = "true" && test "${loaded_ums}" != "true"; then
+    setenv loaded_ums "true"
+    saveenv
+    ums 0 mmc 0
+fi
+setenv loaded_ums "false"
+saveenv
+# Then need to remove boot_ums=true from armbianEnv.txt
+
 if test "${logo}" = "disabled"; then setenv logo "logo.nologo"; fi
 
 if test "${console}" = "display" || test "${console}" = "both"; then setenv consoleargs "console=ttyS0,115200 console=tty1"; fi
