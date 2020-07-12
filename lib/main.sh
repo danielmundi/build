@@ -511,7 +511,7 @@ $([[ -n $COMPRESS_OUTPUTIMAGE ]] && echo "COMPRESS_OUTPUTIMAGE=${COMPRESS_OUTPUT
 } # end of do_default()
 
 if [[ -z $1 ]]; then
-	do_default
+	do_default 2>&1 | tee output/debug/wp-compile.log
 else
 	eval "$@"
 fi
