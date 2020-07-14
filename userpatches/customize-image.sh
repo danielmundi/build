@@ -195,8 +195,9 @@ SetupOtherConfigFiles() {
 
 	display_alert "Setup" "TFTP" "info"
 	usermod -a -G tftp wlanpi
-	chown -R root:tftp /srv/tftp
+	chown -R tftp:tftp /srv/tftp
 	chmod 775 /srv/tftp
+	copy_overlay /etc/default/tftpd-hpa -o root -g root -m 644
 
 	display_alert "Copy config file" "avahi-daemon" "info"
 	copy_overlay /etc/avahi/avahi-daemon.conf -o root -g root -m 644
