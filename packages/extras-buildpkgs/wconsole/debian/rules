@@ -14,7 +14,7 @@ PKG_BIN_DIR=$(PKG_PREFIX)/usr/bin
 
 override_dh_auto_install:
 	mkdir -p $(PKG_CONF_DIR) $(PKG_BIN_DIR)
-	cp -r conf default dhcp images network $(PKG_CONF_DIR)
+	cp -r conf default dhcp images network sysctl ufw $(PKG_CONF_DIR)
 	cp -r README.md release_notes.txt version.txt $(PKG_CONF_DIR)
 	install -o root -g root -m 744 wconsole_switcher $(PKG_BIN_DIR)
 	dh_auto_install

@@ -1,3 +1,15 @@
+wconsole (0.09-1) experimental; urgency=medium
+
+  * New changes from Jiri
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Tue, 14 Jul 2020 20:07:00 -0300
+
+wconsole (0.08.1-1) experimental; urgency=medium
+
+  * Latest changes from dev branch
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Tue, 14 Jul 2020 08:13:24 -0300
+
 wconsole (0.08-1) experimental; urgency=low
 
   * Debianize wconsole package.
