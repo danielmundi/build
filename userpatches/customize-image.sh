@@ -199,7 +199,7 @@ SetupOtherConfigFiles() {
 	copy_overlay /etc/sudoers.d/wlanpidump -o root -g root -m 440
 
 	display_alert "Add our pipx sudoers file for profiler" "" "info"
-	install -o root -g root -m 440 /tmp/overlay/etc/sudoers.d/pipx /etc/sudoers.d
+	copy_overlay /etc/sudoers.d/pipx -o root -g root -m 440
 
 	display_alert "Copy ufw rules" "" "info"
 	copy_overlay /etc/ufw/user.rules -o root -g root -m 640
