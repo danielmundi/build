@@ -1,0 +1,14 @@
+Source: wifiexplorer-sensor
+Section: embedded
+Priority: extra
+Maintainer: Daniel Finimundi <daniel@finimundi.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/intuitibits/wifiexplorer-sensor
+
+Package: wifiexplorer-sensor
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Remote WiFi Explorer sensor
+ Allow remote device to act as a remote sensor for WiFi Explorer.

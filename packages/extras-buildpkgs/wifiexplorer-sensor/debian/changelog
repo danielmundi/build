@@ -1,0 +1,5 @@
+wifiexplorer-sensor (0.1-1) experimental; urgency=low
+
+  * Debianize wifiexplorer-sensor package.
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Sun, 19 Jul 2020 11:30:03 -0300
