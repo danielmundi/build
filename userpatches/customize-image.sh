@@ -31,6 +31,7 @@ Main() {
 	InstallPipx
 	InstallSpeedTestPipx
 	InstallProfilerPipx
+	#InstallWiPerf
 	SetupCockpit
 	SetupWebGUI
 	SetupOtherServices
@@ -166,6 +167,19 @@ InstallWLANPiApps() {
 		display_alert "Install" "$app" "info"
 		/usr/local/sbin/pkg_admin -i $app
 	done
+}
+
+
+InstallWiPerf() {
+	display_alert "Setup package" "wiperf" "info"
+
+	display_alert "Install" "wiperf_poller" "info"
+	python3 -m pip install wiperf_poller==0.1.15
+
+	display_alert "Install" "Splunk-Class-httpevent" "info"
+	git clone https://github.com/wifinigel/Splunk-Class-httpevent.git
+	python3 -m pip install ./Splunk-Class-httpevent
+	rm -rf Splunk-Class-httpevent
 }
 
 SetupOtherServices() {

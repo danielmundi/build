@@ -1,0 +1,14 @@
+Source: wiperf
+Section: embedded
+Priority: extra
+Maintainer: Daniel Finimundi <daniel@finimundi.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/wifinigel/wiperf/
+
+Package: wiperf
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Wireless performance measurement tool
+ Network probe utility that allows running a series of network
+ performance tests.

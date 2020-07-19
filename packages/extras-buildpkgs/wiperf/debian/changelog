@@ -1,0 +1,5 @@
+wiperf (2.0.0-beta2-1) experimental; urgency=low
+
+  * Debianize wiperf package.
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Sun, 19 Jul 2020 15:33:32 -0300
