@@ -5,8 +5,15 @@
 #export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
 #export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
 
+ROOT_PATH=debian/wifiexplorer-sensor
+
 %:
-	dh $@ --with systemd
+	dh $@ --with systemd --with quilt
 
 override_dh_auto_install:
-	dh_auto_install -- prefix=/usr
+	mkdir -p $(ROOT_PATH) \
+		$(ROOT_PATH)/usr/bin \
+		$(ROOT_PATH)/lib/systemd/system
+	install -p -m 755 wifiexplorer-sensor $(ROOT_PATH)/usr/bin
+	install -p -m 644 scripts/wifiexplorer-sensor.service $(ROOT_PATH)/lib/systemd/system
+	dh_auto_install

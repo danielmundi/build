@@ -1,0 +1,12 @@
+Change install path to /usr instead of /usr/local
+--- a/scripts/wifiexplorer-sensor.service
++++ b/scripts/wifiexplorer-sensor.service
+@@ -2,7 +2,7 @@
+ Description=WiFi Explorer Remote Sensor
+ 
+ [Service]
+-ExecStart=/usr/local/bin/wifiexplorer-sensor wlan0
++ExecStart=/usr/bin/wifiexplorer-sensor wlan0
+ 
+ [Install]
+ WantedBy=multi-user.target
