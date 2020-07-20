@@ -24,7 +24,6 @@ override_dh_auto_install:
 	install -p -m 644 deployment/php/php.ini $(PHP_FPM_PATH)
 	cp -ra speedtest/src/* $(SPEEDTEST_PATH)
 	chown -R www-data:www-data $(SPEEDTEST_PATH)
-	install -p -m 644 deployment/nginx/nginx.conf $(NGINX_PATH)
 	cp -a deployment/nginx/wlanpi* $(NGINX_SITES_PATH)
 	install -o root -g root -m 644 deployment/systemd/wlanpi_webui.s* /lib/systemd/system
 	# Do normal install

@@ -166,6 +166,9 @@ InstallFlaskWebUI() {
 
 	display_alert "Remove default config" "nginx" "info"
 	rm -f /etc/nginx/sites-enabled/default
+
+	display_alert "Configure" "nginx" "info"
+	copy_overlay /etc/nginx/nginx.conf -o root -g root -m 644
 }
 
 InstallWLANPiApps() {
