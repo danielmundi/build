@@ -16,13 +16,11 @@ SYSTEMD_PATH=$(ROOT_PATH)/lib/systemd/system
 
 override_dh_auto_install:
 	mkdir -p $(SPEEDTEST_PATH) \
-			 $(NGINX_PATH) \
 			 $(NGINX_SITES_PATH) \
-			 $(SYSTEMD_PATH) \
-			 $(PHP_FPM_PATH)
+			 $(SYSTEMD_PATH)
 	cp -ra speedtest/src/* $(SPEEDTEST_PATH)
 	chown -R www-data:www-data $(SPEEDTEST_PATH)
 	cp -a deployment/nginx/wlanpi* $(NGINX_SITES_PATH)
-	install -o root -g root -m 644 deployment/systemd/wlanpi_webui.s* /lib/systemd/system
+	install -o root -g root -m 644 deployment/systemd/wlanpi_webui.s* $(SYSTEMD_PATH)
 	# Do normal install
 	dh_auto_install
