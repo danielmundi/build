@@ -33,7 +33,7 @@ Main() {
 	InstallProfilerPipx
 	#InstallWiPerf
 	SetupCockpit
-	SetupWebGUI
+	#SetupWebGUI
 	SetupOtherServices
 
 } # Main
