@@ -1,0 +1,5 @@
+wlanpi-webui (1.0.0-beta1-1) experimental; urgency=low
+
+  * Debianize wlanpi-webui package.
+
+ -- Daniel Finimundi <daniel@finimundi.com>  Sun, 19 Jul 2020 21:28:52 -0300

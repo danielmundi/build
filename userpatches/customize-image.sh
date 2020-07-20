@@ -240,6 +240,9 @@ SetupOtherConfigFiles() {
 
 	display_alert "Change default systemd boot target" "multi-user.target" "info"
 	systemctl set-default multi-user.target
+
+	display_alert "Remove default config" "nginx" "info"
+	rm -f /etc/nginx/sites-enabled/default
 }
 
 InstallMongoDB() {

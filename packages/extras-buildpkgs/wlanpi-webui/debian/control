@@ -1,0 +1,14 @@
+Source: wlanpi-webui
+Section: embedded
+Priority: extra
+Maintainer: Daniel Finimundi <daniel@finimundi.com>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/joshschmelzle/wlanpi-webui.git
+
+Package: wlanpi-webui
+Architecture: any
+Multi-Arch: foreign
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: WebUI for WLAN Pi
+ WebUI to monitor and interact with a WLAN Pi.
