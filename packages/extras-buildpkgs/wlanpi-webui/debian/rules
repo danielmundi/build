@@ -10,7 +10,6 @@ SPEEDTEST_PATH=$(ROOT_PATH)/var/www/speedtest
 NGINX_PATH=$(ROOT_PATH)/etc/nginx
 NGINX_SITES_PATH=$(NGINX_PATH)/sites-enabled
 SYSTEMD_PATH=$(ROOT_PATH)/lib/systemd/system
-PHP_FPM_PATH=$(ROOT_PATH)/etc/php/7.3/fpm
 
 %:
 	dh $@ --with systemd
@@ -21,7 +20,6 @@ override_dh_auto_install:
 			 $(NGINX_SITES_PATH) \
 			 $(SYSTEMD_PATH) \
 			 $(PHP_FPM_PATH)
-	install -p -m 644 deployment/php/php.ini $(PHP_FPM_PATH)
 	cp -ra speedtest/src/* $(SPEEDTEST_PATH)
 	chown -R www-data:www-data $(SPEEDTEST_PATH)
 	cp -a deployment/nginx/wlanpi* $(NGINX_SITES_PATH)
