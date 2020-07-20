@@ -33,7 +33,7 @@ Main() {
 	InstallProfilerPipx
 	#InstallWiPerf
 	SetupCockpit
-	#SetupWebGUI
+	InstallFlaskWebUI
 	SetupOtherServices
 
 } # Main
@@ -160,6 +160,14 @@ SetupWebGUI() {
 	chown -R www-data:www-data /var/www/html
 }
 
+InstallFlaskWebUI() {
+	display_alert "Installing" "WebUI" "info"
+	pipx install --include-deps git+https://github.com/joshschmelzle/wlanpi-webui@main#egg=wlanpi_webui
+
+	display_alert "Remove default config" "nginx" "info"
+	rm -f /etc/nginx/sites-enabled/default
+}
+
 InstallWLANPiApps() {
 	display_alert "Install pkg_admin modules" "" "info"
 	for app in $(/usr/local/sbin/pkg_admin -c 2>/dev/null | sed -n '/---/,/---/p' | grep -v -- '---' | grep -v 'Installer script started' | grep -v -e '^$')
@@ -240,9 +248,6 @@ SetupOtherConfigFiles() {
 
 	display_alert "Change default systemd boot target" "multi-user.target" "info"
 	systemctl set-default multi-user.target
-
-	display_alert "Remove default config" "nginx" "info"
-	rm -f /etc/nginx/sites-enabled/default
 }
 
 InstallMongoDB() {
