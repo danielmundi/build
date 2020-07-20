@@ -172,6 +172,9 @@ InstallFlaskWebUI() {
 
 	display_alert "Configure" "PHP" "info"
 	copy_overlay /etc/php/7.3/fpm/php.ini -o root -g root -m 644
+
+	display_alert "Fix permissions" "/var/www" "info"
+	chown -R www-data:www-data /var/www
 }
 
 InstallWLANPiApps() {
