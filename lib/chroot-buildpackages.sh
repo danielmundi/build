@@ -168,6 +168,15 @@ chroot_build_packages()
 					package_upstream_version needs_building plugin_target_dir package_component "package_builddeps_${release}"
 				source "${plugin}"
 
+				package_current_version=$(cd "${SRC}"/packages/extras-buildpkgs/"$package_name"; dpkg-parsechangelog --show-field Version)
+				display_alert "Package current verion is" "$package_current_version" "info"
+
+				package_version_used=$package_current_version
+				if $(dpkg --compare-versions "$package_current_version" lt "$package_upstream_version"); then
+					package_version_used=$package_upstream_version
+					display_alert "Package will use upstream version" "$package_version_used" "info"
+				fi
+
 				# check build condition
 				if [[ $(type -t package_checkbuild) == function ]] && ! package_checkbuild; then
 					display_alert "Skipping building $package_name for" "$release/$arch"
@@ -181,8 +190,8 @@ chroot_build_packages()
 				local needs_building=no
 				if [[ -n $package_install_target ]]; then
 					for f in $package_install_target; do
-						if [[ -z $(find "${plugin_target_dir}" -name "${f}_*$REVISION*_$arch.deb") ]] &&
-						   [[ -z $(find $plugin_target_dir -name "${f}_*$REVISION*_all.deb") ]]; then
+						if [[ -z $(find "${plugin_target_dir}" -name "${f}_${package_version_used##*:}*$REVISION*_$arch.deb") ]] &&
+						   [[ -z $(find $plugin_target_dir -name "${f}_${package_version_used##*:}*$REVISION*_all.deb") ]]; then
 							needs_building=yes
 							break
 						fi
@@ -235,8 +244,8 @@ chroot_build_packages()
 				# set upstream version
 				[[ -n "${package_upstream_version}" ]] && debchange --preserve --newversion "${package_upstream_version}" "Import from upstream"
 				# set local version
-				# debchange -l~armbian${REVISION}-${builddate}+ "New Armbian release"
-				debchange -l~armbian"${REVISION}"+ "New Armbian release"
+				# debchange -l-armbian${REVISION}-${builddate} "New Armbian release"
+				debchange -l-armbian"${REVISION}" "New Armbian release"
 				display_alert "Building package"
 				dpkg-buildpackage -b -uc -us -j2
 				if [[ \$? -eq 0 ]]; then
