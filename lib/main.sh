@@ -513,5 +513,5 @@ $([[ -n $COMPRESS_OUTPUTIMAGE ]] && echo "COMPRESS_OUTPUTIMAGE=${COMPRESS_OUTPUT
 if [[ -z $1 ]]; then
 	do_default 2>&1 | tee output/debug/wp-compile.log
 else
-	eval "$@" | tee output/debug/wp-compile.log
+	eval "$@" 2>&1 | tee output/debug/wp-compile.log
 fi

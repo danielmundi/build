@@ -1,6 +1,6 @@
 #!/bin/bash
 
-./compile.sh "$@"
+./compile.sh $@
 
 errors=$(grep -v -f .ignore-errors output/debug/wp-compile.log |
 	    grep --color=always -A1 -iwn "error\|errors\|fail\|failure\|operation not permitted\|permission denied\|unable to locate\|could not connect to\|read-only file system\|connection refused\|fatal\|unable")
