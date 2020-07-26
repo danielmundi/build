@@ -207,12 +207,6 @@ SetupOtherServices() {
 	display_alert "Setup service" "iperf2" "info"
 	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
 	copy_overlay /lib/systemd/system/iperf2-udp.service -o root -g root -m 644
-
-	display_alert "Configure service" "NetworkManager" "info"
-	cat <<-EOF >> /etc/NetworkManager/NetworkManager.conf
-[keyfile]
-unmanaged-devices=*,except:type:ethernet
-EOF
 }
 
 SetupOtherConfigFiles() {

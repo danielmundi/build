@@ -424,13 +424,15 @@ install_common()
 	sed -i 's/#\?PubkeyAuthentication .*/PubkeyAuthentication yes/' "${SDCARD}"/etc/ssh/sshd_config
 
 	# configure network manager
-	sed "s/managed=\(.*\)/managed=true/g" -i "${SDCARD}"/etc/NetworkManager/NetworkManager.conf
+	if [ -f "${SDCARD}"/etc/NetworkManager/NetworkManager.conf ]; then
+		sed "s/managed=\(.*\)/managed=true/g" -i "${SDCARD}"/etc/NetworkManager/NetworkManager.conf
 
-	# remove network manager defaults to handle eth by default
-	rm -f "${SDCARD}"/usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf
+		# remove network manager defaults to handle eth by default
+		rm -f "${SDCARD}"/usr/lib/NetworkManager/conf.d/10-globally-managed-devices.conf
 
-	# most likely we don't need to wait for nm to get online
-	chroot "${SDCARD}" /bin/bash -c "systemctl disable NetworkManager-wait-online.service" >> "${DEST}"/debug/install.log 2>&1
+		# most likely we don't need to wait for nm to get online
+		chroot "${SDCARD}" /bin/bash -c "systemctl disable NetworkManager-wait-online.service" >> "${DEST}"/debug/install.log 2>&1
+	fi
 
 	# avahi daemon defaults if exists
 	[[ -f "${SDCARD}"/usr/share/doc/avahi-daemon/examples/sftp-ssh.service ]] && \
@@ -439,14 +441,16 @@ install_common()
 	cp "${SDCARD}"/usr/share/doc/avahi-daemon/examples/ssh.service "${SDCARD}"/etc/avahi/services/
 
 	# Just regular DNS and maintain /etc/resolv.conf as a file
-	sed "/dns/d" -i "${SDCARD}"/etc/NetworkManager/NetworkManager.conf
-	sed "s/\[main\]/\[main\]\ndns=default\nrc-manager=file/g" -i "${SDCARD}"/etc/NetworkManager/NetworkManager.conf
-	if [[ -n $NM_IGNORE_DEVICES ]]; then
-		mkdir -p "${SDCARD}"/etc/NetworkManager/conf.d/
-		cat <<-EOF > "${SDCARD}"/etc/NetworkManager/conf.d/10-ignore-interfaces.conf
-		[keyfile]
-		unmanaged-devices=$NM_IGNORE_DEVICES
-		EOF
+	if [ -f "${SDCARD}"/etc/NetworkManager/NetworkManager.conf ]; then
+		sed "/dns/d" -i "${SDCARD}"/etc/NetworkManager/NetworkManager.conf
+		sed "s/\[main\]/\[main\]\ndns=default\nrc-manager=file/g" -i "${SDCARD}"/etc/NetworkManager/NetworkManager.conf
+		if [[ -n $NM_IGNORE_DEVICES ]]; then
+			mkdir -p "${SDCARD}"/etc/NetworkManager/conf.d/
+			cat <<-EOF > "${SDCARD}"/etc/NetworkManager/conf.d/10-ignore-interfaces.conf
+			[keyfile]
+			unmanaged-devices=$NM_IGNORE_DEVICES
+			EOF
+		fi
 	fi
 
 	# nsswitch settings for sane DNS behavior: remove resolve, assure libnss-myhostname support
