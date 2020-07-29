@@ -212,9 +212,9 @@ SetupOtherServices() {
 SetupOtherConfigFiles() {
 	display_alert "Set retry for dhclient" "" "info"
 	if grep -q -E "^#?retry " /etc/dhcp/dhclient.conf; then
-		sed -i 's/^#\?retry .*/retry 15;/' /etc/dhcp/dhclient.conf
+		sed -i 's/^#\?retry .*/retry 600;/' /etc/dhcp/dhclient.conf
 	else
-		echo "retry 15;" >> /etc/dhcp/dhclient.conf
+		echo "retry 600;" >> /etc/dhcp/dhclient.conf
 	fi
 
 	display_alert "Set default DNS nameserver on resolveconf template" "" "info"
