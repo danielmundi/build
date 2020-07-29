@@ -258,6 +258,9 @@ SetupOtherConfigFiles() {
 
 	display_alert "Change default systemd boot target" "multi-user.target" "info"
 	systemctl set-default multi-user.target
+	
+	display_alert "Copy config file" "RF Central Regulatory Domain Agent" "info"
+	copy_overlay /etc/default/crda -o root -g root -m 644	
 }
 
 InstallMongoDB() {
