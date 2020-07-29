@@ -118,7 +118,7 @@ subnet 169.254.42.0 netmask 255.255.255.224 {
 	option domain-name "wlanpi.local";
 	option broadcast-address 169.254.42.31;
 	default-lease-time 86400;
-	max-lease-time 7200;
+	max-lease-time 86400;
 }
 EOF
 }
@@ -258,6 +258,9 @@ SetupOtherConfigFiles() {
 
 	display_alert "Change default systemd boot target" "multi-user.target" "info"
 	systemctl set-default multi-user.target
+	
+	display_alert "Copy config file" "RF Central Regulatory Domain Agent" "info"
+	copy_overlay /etc/default/crda -o root -g root -m 644	
 }
 
 InstallMongoDB() {
