@@ -4,7 +4,7 @@ auto lo
 iface lo inet loopback
 
 # Wired ethernet
-auto eth0
+allow-hotplug eth0
 iface eth0 inet dhcp
 
 # wlan0 configuration

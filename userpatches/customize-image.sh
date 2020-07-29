@@ -250,6 +250,12 @@ SetupOtherConfigFiles() {
 	display_alert "Copy config file" "network/interfaces" "info"
 	copy_overlay /etc/network/interfaces -o root -g root -m 644
 
+	display_alert "Copy config file" "ifplugd" "info"
+	copy_overlay /etc/default/ifplugd -o root -g root -m 644
+
+	display_alert "Copy script" "release-dhcp-lease" "info"
+	copy_overlay /etc/ifplugd/action.d/release-dhcp-lease -o root -g root -m 755
+
 	display_alert "Change default systemd boot target" "multi-user.target" "info"
 	systemctl set-default multi-user.target
 }
