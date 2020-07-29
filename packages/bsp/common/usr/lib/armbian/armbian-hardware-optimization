@@ -78,7 +78,7 @@ prepare_board() {
 		for i in cpufreq/ondemand cpu0/cpufreq/ondemand cpu4/cpufreq/ondemand ; do
 			if [ -d $i ]; then
 				echo 1 >${i}/io_is_busy
-				echo 25 >${i}/up_threshold
+				echo 50 >${i}/up_threshold
 				echo 10 >${i}/sampling_down_factor
 				echo 200000 >${i}/sampling_rate
 			fi
