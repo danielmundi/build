@@ -118,7 +118,7 @@ subnet 169.254.42.0 netmask 255.255.255.224 {
 	option domain-name "wlanpi.local";
 	option broadcast-address 169.254.42.31;
 	default-lease-time 86400;
-	max-lease-time 7200;
+	max-lease-time 86400;
 }
 EOF
 }
