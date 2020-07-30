@@ -221,7 +221,7 @@ SetupOtherConfigFiles() {
 	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
 
 	display_alert "Enable dynamically assigned DNS nameservers" "" "info"
-	sudo ln -sf /etc/resolvconf/run/resolv.conf /etc/resolv.conf
+	ln -sf /etc/resolvconf/run/resolv.conf /etc/resolv.conf
 
 	display_alert "Add our custom sudoers file" "" "info"
 	copy_overlay /etc/sudoers.d/wlanpidump -o root -g root -m 440
