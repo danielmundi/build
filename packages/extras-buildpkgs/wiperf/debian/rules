@@ -8,7 +8,7 @@ export DH_VERBOSE = 1
 PKG_PREFIX=debian/wiperf
 PKG_CONF_DIR=$(PKG_PREFIX)/etc/wiperf
 PKG_BIN_DIR=$(PKG_PREFIX)/usr/bin
-PKG_SHARE_DIR=$(PKG_PREFIX)/usr/share
+PKG_SHARE_DIR=$(PKG_PREFIX)/usr/share/wiperf
 
 %:
 	dh $@
