@@ -1,4 +1,4 @@
-wiperf (2.0.0-beta3-2) UNRELEASED; urgency=medium
+wiperf (2.0.0-beta3-3) experimental; urgency=medium
 
   * Fixed /usr/share directory
 
