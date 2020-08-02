@@ -31,7 +31,7 @@ Main() {
 	InstallPipx
 	InstallSpeedTestPipx
 	InstallProfilerPipx
-	#InstallWiPerf
+	InstallWiPerf
 	SetupCockpit
 	InstallFlaskWebUI
 	SetupOtherServices
@@ -191,12 +191,7 @@ InstallWiPerf() {
 	display_alert "Setup package" "wiperf" "info"
 
 	display_alert "Install" "wiperf_poller" "info"
-	python3 -m pip install wiperf_poller==0.1.15
-
-	display_alert "Install" "Splunk-Class-httpevent" "info"
-	git clone https://github.com/wifinigel/Splunk-Class-httpevent.git
-	python3 -m pip install ./Splunk-Class-httpevent
-	rm -rf Splunk-Class-httpevent
+	python3 -m pip install wiperf_poller
 }
 
 SetupOtherServices() {
