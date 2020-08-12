@@ -26,7 +26,6 @@ Main() {
 	SetDefaultShell
 	AddUserWLANPi
 	SetupRNDIS
-	SetupOtherConfigFiles
 	SetupPipxEnviro
 	InstallPipx
 	InstallSpeedTestPipx
@@ -35,6 +34,7 @@ Main() {
 	SetupCockpit
 	InstallFlaskWebUI
 	SetupOtherServices
+	SetupOtherConfigFiles
 
 } # Main
 
