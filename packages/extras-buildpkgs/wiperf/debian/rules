@@ -22,7 +22,7 @@ pip_install:
 
 override_dh_auto_install: pip_install
 	mkdir -p $(PKG_CONF_DIR) $(PKG_BIN_DIR) $(PKG_SHARE_DIR)
-	cp -r conf dashboards $(PKG_CONF_DIR)
+	cp -r conf dashboards config.default.ini $(PKG_CONF_DIR)
 	cp -r README.md release_notes.txt version.txt $(PKG_SHARE_DIR)
 	install -o root -g root -m 755 wiperf_run.py $(PKG_SHARE_DIR)
 	install -o root -g root -m 744 wiperf_switcher $(PKG_BIN_DIR)
