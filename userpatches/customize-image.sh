@@ -294,6 +294,10 @@ copy_overlay() {
 	# Remove file from arguments
 	shift
 
+	# Make sure path to dest file exists
+	mkdir -p $(dirname "$INSTALL_FILE")
+
+	# Copy overlay with defined permissions
 	install $@ "$OVERLAY_DIR$INSTALL_FILE" "$INSTALL_FILE"
 }
 
