@@ -213,9 +213,6 @@ SetupOtherConfigFiles() {
 		echo "retry 600;" >> /etc/dhcp/dhclient.conf
 	fi
 
-	display_alert "Set default DNS nameserver on resolveconf template" "" "info"
-	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
-
 	display_alert "Enable dynamically assigned DNS nameservers" "" "info"
 	ln -sf /etc/resolvconf/run/resolv.conf /etc/resolv.conf
 
