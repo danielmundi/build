@@ -110,7 +110,6 @@ SetupRNDIS() {
 
 	display_alert "Configure DHCP" "dhcpd.conf" "info"
 	cat <<-EOF >> /etc/dhcp/dhcpd.conf
-	
 # usb0 DHCP scope
 subnet 169.254.42.0 netmask 255.255.255.224 {
 	interface usb0;
