@@ -31,9 +31,8 @@ Main() {
 	InstallPipx
 	InstallSpeedTestPipx
 	InstallProfilerPipx
-	#InstallWiPerf
 	SetupCockpit
-	InstallFlaskWebUI
+	SetupWebGUI
 	SetupOtherServices
 
 } # Main
@@ -41,7 +40,7 @@ Main() {
 # This sets up all external debian repos so we can call "apt update" only once here
 SetupExternalRepos() {
 	display_alert "Include apt repo" "WLAN Pi" "info"
-	echo "deb [trusted=yes] https://apt.fury.io/dfinimundi /" > /etc/apt/sources.list.d/wlanpi.list
+	echo "deb [trusted=yes] https://dfinimundi.fury.land/apt/ /" > /etc/apt/sources.list.d/wlanpi.list
 
 	apt update
 }
@@ -117,8 +116,8 @@ subnet 169.254.42.0 netmask 255.255.255.224 {
 	option domain-name-servers wlanpi.local;
 	option domain-name "wlanpi.local";
 	option broadcast-address 169.254.42.31;
-	default-lease-time 86400;
-	max-lease-time 86400;
+	default-lease-time 600;
+	max-lease-time 7200;
 }
 EOF
 }
@@ -160,23 +159,6 @@ SetupWebGUI() {
 	chown -R www-data:www-data /var/www/html
 }
 
-InstallFlaskWebUI() {
-	display_alert "Installing" "WebUI" "info"
-	pipx install --include-deps git+https://github.com/joshschmelzle/wlanpi-webui@main#egg=wlanpi_webui
-
-	display_alert "Remove default config" "nginx" "info"
-	rm -f /etc/nginx/sites-enabled/default
-
-	display_alert "Configure" "nginx" "info"
-	copy_overlay /etc/nginx/nginx.conf -o root -g root -m 644
-
-	display_alert "Configure" "PHP" "info"
-	copy_overlay /etc/php/7.3/fpm/php.ini -o root -g root -m 644
-
-	display_alert "Fix permissions" "/var/www" "info"
-	chown -R www-data:www-data /var/www
-}
-
 InstallWLANPiApps() {
 	display_alert "Install pkg_admin modules" "" "info"
 	for app in $(/usr/local/sbin/pkg_admin -c 2>/dev/null | sed -n '/---/,/---/p' | grep -v -- '---' | grep -v 'Installer script started' | grep -v -e '^$')
@@ -186,19 +168,6 @@ InstallWLANPiApps() {
 	done
 }
 
-
-InstallWiPerf() {
-	display_alert "Setup package" "wiperf" "info"
-
-	display_alert "Install" "wiperf_poller" "info"
-	python3 -m pip install wiperf_poller==0.1.15
-
-	display_alert "Install" "Splunk-Class-httpevent" "info"
-	git clone https://github.com/wifinigel/Splunk-Class-httpevent.git
-	python3 -m pip install ./Splunk-Class-httpevent
-	rm -rf Splunk-Class-httpevent
-}
-
 SetupOtherServices() {
 	display_alert "Setup service" "iperf3" "info"
 	copy_overlay /lib/systemd/system/iperf3.service -o root -g root -m 644
@@ -206,22 +175,24 @@ SetupOtherServices() {
 
 	display_alert "Setup service" "iperf2" "info"
 	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
-	copy_overlay /lib/systemd/system/iperf2-udp.service -o root -g root -m 644
+
+	display_alert "Configure service" "NetworkManager" "info"
+	cat <<-EOF >> /etc/NetworkManager/NetworkManager.conf
+[keyfile]
+unmanaged-devices=*,except:type:ethernet
+EOF
 }
 
 SetupOtherConfigFiles() {
 	display_alert "Set retry for dhclient" "" "info"
 	if grep -q -E "^#?retry " /etc/dhcp/dhclient.conf; then
-		sed -i 's/^#\?retry .*/retry 600;/' /etc/dhcp/dhclient.conf
+		sed -i 's/^#\?retry .*/retry 15;/' /etc/dhcp/dhclient.conf
 	else
-		echo "retry 600;" >> /etc/dhcp/dhclient.conf
+		echo "retry 15;" >> /etc/dhcp/dhclient.conf
 	fi
 
 	display_alert "Set default DNS nameserver on resolveconf template" "" "info"
 	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
-
-	display_alert "Enable dynamically assigned DNS nameservers" "" "info"
-	ln -sf /etc/resolvconf/run/resolv.conf /etc/resolv.conf
 
 	display_alert "Add our custom sudoers file" "" "info"
 	copy_overlay /etc/sudoers.d/wlanpidump -o root -g root -m 440
@@ -253,17 +224,8 @@ SetupOtherConfigFiles() {
 	display_alert "Copy config file" "network/interfaces" "info"
 	copy_overlay /etc/network/interfaces -o root -g root -m 644
 
-	display_alert "Copy config file" "ifplugd" "info"
-	copy_overlay /etc/default/ifplugd -o root -g root -m 644
-
-	display_alert "Copy script" "release-dhcp-lease" "info"
-	copy_overlay /etc/ifplugd/action.d/release-dhcp-lease -o root -g root -m 755
-
 	display_alert "Change default systemd boot target" "multi-user.target" "info"
 	systemctl set-default multi-user.target
-	
-	display_alert "Copy config file" "RF Central Regulatory Domain Agent" "info"
-	copy_overlay /etc/default/crda -o root -g root -m 644	
 }
 
 InstallMongoDB() {
