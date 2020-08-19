@@ -1,0 +1,14 @@
+Source: wlanpiserver
+Section: embedded
+Priority: extra
+Maintainer: Jiri Brejcha <jirka@jiribrejcha.net>
+Build-Depends: debhelper (>=9)
+Standards-Version: 3.9.8
+Homepage: https://github.com/jiribrejcha/wlanpiserver.git
+
+Package: wlanpiserver
+Architecture: all
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: Server mode for the WLAN Pi
+ Configuration files, scripts and mode switcher
+ to enable server mode on the WLAN Pi.
