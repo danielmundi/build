@@ -155,12 +155,9 @@ compile_uboot()
 		target_patchdir=$(cut -d';' -f2 <<< "${target}")
 		target_files=$(cut -d';' -f3 <<< "${target}")
 
-		# only checkout when we go several times over the source
-		if [[ $target_cycles -ge 1 ]]; then
-			display_alert "Checking out to clean sources"
-			git checkout -f -q HEAD
-		fi
-		target_cycles=$((target_cycles+1))
+		# needed for multiple targets and for calling compile_uboot directly
+		display_alert "Checking out to clean sources"
+		git checkout -f -q HEAD
 
 		if [[ $CLEAN_LEVEL == *make* ]]; then
 			display_alert "Cleaning" "$BOOTSOURCEDIR" "info"
@@ -543,7 +540,7 @@ compile_armbian-config()
 	Architecture: all
 	Maintainer: $MAINTAINER <$MAINTAINERMAIL>
 	Replaces: armbian-bsp
-	Depends: bash, iperf3, psmisc, curl, bc, expect, dialog, iptables, resolvconf, pv, \
+	Depends: bash, iperf3, psmisc, curl, bc, expect, dialog, pv, \
 	debconf-utils, unzip, build-essential, html2text, apt-transport-https, html2text, dirmngr, software-properties-common
 	Recommends: armbian-bsp
 	Suggests: libpam-google-authenticator, qrencode, network-manager, sunxi-tools
