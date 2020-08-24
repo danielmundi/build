@@ -203,6 +203,9 @@ SetupOtherServices() {
 	display_alert "Setup service" "iperf2" "info"
 	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
 	copy_overlay /lib/systemd/system/iperf2-udp.service -o root -g root -m 644
+
+	display_alert "Disable service" "serial-getty" "info"
+	systemctl disable serial-getty@ttyS1
 }
 
 SetupOtherConfigFiles() {
