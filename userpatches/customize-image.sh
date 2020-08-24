@@ -204,8 +204,12 @@ SetupOtherServices() {
 	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
 	copy_overlay /lib/systemd/system/iperf2-udp.service -o root -g root -m 644
 
-	display_alert "Disable service" "serial-getty" "info"
-	systemctl disable serial-getty@ttyS1
+	display_alert "Disable service for OTG serial" "serial-getty" "info"
+	if [ $LINUXFAMILY == sunxi* ]; then
+		systemctl disable serial-getty@ttyS1
+	elif [ $LINUXFAMILY == rockchip* ]
+		systemctl disable serial-getty@ttyS2
+	fi
 }
 
 SetupOtherConfigFiles() {
