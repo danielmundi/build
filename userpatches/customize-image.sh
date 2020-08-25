@@ -207,7 +207,7 @@ SetupOtherServices() {
 	display_alert "Disable service for OTG serial" "serial-getty" "info"
 	if [ $LINUXFAMILY == sunxi* ]; then
 		systemctl disable serial-getty@ttyS1
-	elif [ $LINUXFAMILY == rockchip* ]
+	elif [ $LINUXFAMILY == rockchip* ]; then
 		systemctl disable serial-getty@ttyS2
 	fi
 }
