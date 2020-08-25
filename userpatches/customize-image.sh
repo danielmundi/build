@@ -189,7 +189,7 @@ SetupOtherConfigFiles() {
 		sed -i 's/^#\?retry .*/retry 15;/' /etc/dhcp/dhclient.conf
 	else
 		echo "retry 15;" >> /etc/dhcp/dhclient.conf
-	fi
+	if
 
 	display_alert "Set default DNS nameserver on resolveconf template" "" "info"
 	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
