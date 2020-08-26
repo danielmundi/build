@@ -1,4 +1,4 @@
-wlanpiserver (0.05-1) experimental; urgency=low
+wlanpiserver (0.01-1) experimental; urgency=low
 
   * Debianize wlanpiserver package.
 
