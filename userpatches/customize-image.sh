@@ -26,7 +26,6 @@ Main() {
 	SetDefaultShell
 	AddUserWLANPi
 	SetupRNDIS
-	SetupOtherConfigFiles
 	SetupPipxEnviro
 	InstallPipx
 	InstallSpeedTestPipx
@@ -35,6 +34,7 @@ Main() {
 	SetupCockpit
 	InstallFlaskWebUI
 	SetupOtherServices
+	SetupOtherConfigFiles
 
 } # Main
 
@@ -79,6 +79,7 @@ InstallProfilerPipx() {
 	
 	pipx install git+https://github.com/joshschmelzle/profiler2.git@main#egg=profiler2
 	copy_overlay /lib/systemd/system/profiler.service -o root -g root -m 644
+	copy_overlay /etc/profiler2/config.ini -o root -g root -m 644
 }
 
 SetupCockpit() {
@@ -202,6 +203,13 @@ SetupOtherServices() {
 	display_alert "Setup service" "iperf2" "info"
 	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
 	copy_overlay /lib/systemd/system/iperf2-udp.service -o root -g root -m 644
+
+	display_alert "Disable service for OTG serial" "serial-getty" "info"
+	if [ $LINUXFAMILY == sunxi* ]; then
+		systemctl disable serial-getty@ttyS1
+	elif [ $LINUXFAMILY == rockchip* ]; then
+		systemctl disable serial-getty@ttyS2
+	fi
 }
 
 SetupOtherConfigFiles() {
@@ -211,9 +219,6 @@ SetupOtherConfigFiles() {
 	else
 		echo "retry 600;" >> /etc/dhcp/dhclient.conf
 	fi
-
-	display_alert "Set default DNS nameserver on resolveconf template" "" "info"
-	echo "nameserver 8.8.8.8" >> /etc/resolvconf/resolv.conf.d/tail
 
 	display_alert "Enable dynamically assigned DNS nameservers" "" "info"
 	ln -sf /etc/resolvconf/run/resolv.conf /etc/resolv.conf
@@ -294,6 +299,10 @@ copy_overlay() {
 	# Remove file from arguments
 	shift
 
+	# Make sure path to dest file exists
+	mkdir -p $(dirname "$INSTALL_FILE")
+
+	# Copy overlay with defined permissions
 	install $@ "$OVERLAY_DIR$INSTALL_FILE" "$INSTALL_FILE"
 }
 

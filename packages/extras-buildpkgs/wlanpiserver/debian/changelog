@@ -1,0 +1,5 @@
+wlanpiserver (0.01-1) experimental; urgency=low
+
+  * Debianize wlanpiserver package.
+
+ -- Jiri Brejcha <jirka@jiribrejcha.net>  Wed, 19 Aug 2020 22:00:00 -0000
