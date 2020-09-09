@@ -69,7 +69,13 @@ pack_upload ()
 	# pack and upload to server or just pack
 
 	display_alert "Signing" "Please wait!" "info"
-	local version="Armbian_${REVISION}_${BOARD^}_${RELEASE}_${BRANCH}_${VER/-$LINUXFAMILY/}"
+	local version=""
+	if [[ "$WLANPI_VERSION" == "" ]]; then
+		version="Armbian_${REVISION}_${BOARD,,}_${VER/-$LINUXFAMILY/}"
+	else
+		version="${BOARD,,}-v$WLANPI_VERSION"
+	fi
+	[[ -z "$WLANPI_RELEASE" ]] && version=${version}-$(date +"%y%m%d")
 	local subdir="archive"
 	compression_type=""
 

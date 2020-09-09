@@ -573,7 +573,14 @@ update_initramfs()
 create_image()
 {
 	# stage: create file name
-	local version="Armbian_${REVISION}_${BOARD^}_${RELEASE}_${BRANCH}_${VER/-$LINUXFAMILY/}"
+	local version=""
+	if [[ "$WLANPI_VERSION" == "" ]]; then
+		version="Armbian_${REVISION}_${BOARD,,}_${VER/-$LINUXFAMILY/}"
+	else
+		version="${BOARD,,}-v$WLANPI_VERSION"
+		echo "VERSION=\"$WLANPI_VERSION\"" > $USERPATCHES_PATH/overlay/etc/wlanpi-release
+	fi
+	[[ -z "$WLANPI_RELEASE" ]] && version=${version}-$(date +"%y%m%d")
 	[[ $BUILD_DESKTOP == yes ]] && version=${version}_desktop
 	[[ $BUILD_MINIMAL == yes ]] && version=${version}_minimal
 	[[ $ROOTFS_TYPE == nfs ]] && version=${version}_nfsboot
