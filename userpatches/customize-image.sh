@@ -77,7 +77,7 @@ InstallProfilerPipx() {
 	display_alert "Install profiler2" "" "info"
 	# install with pip via pipx
 	
-	pipx install git+https://github.com/joshschmelzle/profiler2.git@main#egg=profiler2
+	pipx install git+https://github.com/wlan-pi/profiler2.git@main#egg=profiler2
 	copy_overlay /lib/systemd/system/profiler.service -o root -g root -m 644
 	copy_overlay /etc/profiler2/config.ini -o root -g root -m 644
 }
@@ -163,7 +163,7 @@ SetupWebGUI() {
 
 InstallFlaskWebUI() {
 	display_alert "Installing" "WebUI" "info"
-	pipx install --include-deps git+https://github.com/joshschmelzle/wlanpi-webui@main#egg=wlanpi_webui
+	pipx install --include-deps git+https://github.com/wlan-pi/wlanpi-webui@main#egg=wlanpi_webui
 
 	display_alert "Remove default config" "nginx" "info"
 	rm -f /etc/nginx/sites-enabled/default
