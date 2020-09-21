@@ -203,6 +203,12 @@ chroot_build_packages()
 					display_alert "Packages are up to date" "$package_name $release/$arch" "info"
 					continue
 				fi
+
+				# remove old packages
+				for f in $package_install_target; do
+					find "${plugin_target_dir}" -name "${f}.deb" -exec rm -f {} \;
+				done
+
 				display_alert "Building packages" "$package_name $release/$arch" "ext"
 				local dist_builddeps_name="package_builddeps_${release}"
 				[[ -v $dist_builddeps_name ]] && package_builddeps="${package_builddeps} ${!dist_builddeps_name}"

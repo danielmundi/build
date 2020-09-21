@@ -25,6 +25,7 @@
 # prepare_host
 # webseed
 # download_and_verify
+# upload_deb_packages
 
 # cleaning <target>
 #
@@ -1325,4 +1326,9 @@ show_developer_warning()
 		--yes-label "I understand and agree" --yesno "$warn_text" "${TTY_Y}" "${TTY_X}"
 	[[ $? -ne 0 ]] && exit_with_error "Error switching to the expert mode"
 	SHOW_WARNING=no
+}
+
+upload_deb_packages()
+{
+    find output/debs/ -type f \( -name "*.deb" -not -name "*~*" \) -exec fury push --public {} \;
 }
