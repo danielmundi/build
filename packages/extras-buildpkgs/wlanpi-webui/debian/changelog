@@ -1,4 +1,4 @@
-wlanpi-webui (1.0.0-beta1-1) experimental; urgency=low
+wlanpi-webui (1.0.0-b3-1) experimental; urgency=low
 
   * Debianize wlanpi-webui package.
 
