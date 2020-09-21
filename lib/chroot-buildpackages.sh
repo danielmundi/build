@@ -206,7 +206,7 @@ chroot_build_packages()
 
 				# remove old packages
 				for f in $package_install_target; do
-					find "${plugin_target_dir}" -name "${f}.deb" -exec rm -f {} \;
+					find "${plugin_target_dir}" -name "${f}*.deb" -exec rm -f {} \;
 				done
 
 				display_alert "Building packages" "$package_name $release/$arch" "ext"
