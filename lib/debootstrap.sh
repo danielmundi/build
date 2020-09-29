@@ -578,7 +578,7 @@ create_image()
 		version="Armbian_${REVISION}_${BOARD,,}_${VER/-$LINUXFAMILY/}"
 	else
 		version="${BOARD,,}-v$WLANPI_VERSION"
-		echo "VERSION=\"$WLANPI_VERSION\"" > $USERPATCHES_PATH/overlay/etc/wlanpi-release
+		echo "VERSION=\"$WLANPI_VERSION\"" > $SDCARD/etc/wlanpi-release
 	fi
 	[[ -z "$WLANPI_RELEASE" ]] && version=${version}-$(date +"%y%m%d")
 	[[ $BUILD_DESKTOP == yes ]] && version=${version}_desktop
