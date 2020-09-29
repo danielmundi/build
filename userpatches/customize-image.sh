@@ -235,9 +235,6 @@ SetupOtherConfigFiles() {
 	display_alert "Enable UFW on first boot script" "" "info"
 	sed -i '/start)/a ufw enable' /usr/lib/armbian/armbian-firstrun
 
-	display_alert "Include wlanpi release file" "" "info"
-	copy_overlay /etc/wlanpi-release -o root -g root -m 644
-
 	display_alert "Setup" "TFTP" "info"
 	usermod -a -G tftp wlanpi
 	chown -R tftp:tftp /srv/tftp
