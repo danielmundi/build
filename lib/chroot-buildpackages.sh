@@ -247,8 +247,16 @@ chroot_build_packages()
 				cd /root/build/"${package_name}"
 				# copy overlay / "debianization" files
 				[[ -d "/root/overlay/${package_name}/" ]] && rsync -aq /root/overlay/"${package_name}" /root/build/
+
 				# set upstream version
-				[[ -n "${package_upstream_version}" ]] && debchange --preserve --newversion "${package_upstream_version}" "Import from upstream"
+				repo_version=$(git describe --tags)
+				repo_version=$(echo ${repo_version##v} | cut -d'-' -f1,2)
+				if $(dpkg --compare-versions "$repo_version" gt "$package_version_used"); then
+					package_version_used=$repo_version
+					display_alert "Upstream version updated from repo" "$package_version_used" "info"
+				fi
+
+				[[ "${package_version_used}" != "${package_current_version}" ]] && debchange --preserve --newversion "${package_version_used}" "Import from upstream"
 				# set local version
 				# debchange -l-armbian${REVISION}-${builddate} "New Armbian release"
 				debchange -l-armbian"${REVISION}" "New Armbian release"
