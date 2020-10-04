@@ -204,6 +204,10 @@ SetupOtherServices() {
 	copy_overlay /lib/systemd/system/iperf2.service -o root -g root -m 644
 	copy_overlay /lib/systemd/system/iperf2-udp.service -o root -g root -m 644
 
+	display_alert "Setup service" "networkinfo" "info"
+	copy_overlay /lib/systemd/system/networkinfo.service -o root -g root -m 644
+	systemctl enable networkinfo
+
 	display_alert "Disable service for OTG serial" "serial-getty" "info"
 	if [ $LINUXFAMILY == sunxi* ]; then
 		systemctl disable serial-getty@ttyS1
@@ -249,6 +253,9 @@ SetupOtherConfigFiles() {
 
 	display_alert "Copy config file" "network/interfaces" "info"
 	copy_overlay /etc/network/interfaces -o root -g root -m 644
+
+	display_alert "Configure arp_ignore" "network/arp" "info"
+	echo "net.ipv4.conf.eth0.arp_ignore = 1" >> /etc/sysctl.conf
 
 	display_alert "Copy config file" "ifplugd" "info"
 	copy_overlay /etc/default/ifplugd -o root -g root -m 644
