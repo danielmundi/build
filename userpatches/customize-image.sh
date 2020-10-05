@@ -269,14 +269,12 @@ SetupOtherConfigFiles() {
 	display_alert "Copy config file" "RF Central Regulatory Domain Agent" "info"
 	copy_overlay /etc/default/crda -o root -g root -m 644
 
-	cat <<-EOF >> /home/wlanpi/.bashrc
-alias reachability='sudo /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/reachability.sh'
-alias publicip='/usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/publicip.sh'
-alias watchinternet='/usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/watchinternet.sh'
-alias telegrambot='/usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/telegrambot.sh'
-alias ipconfig='sudo /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/ipconfig.sh'
-alias portblinker='/usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/portblinker.sh'
-EOF
+	ln -s /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/reachability.sh /usr/bin/reachability
+	ln -s /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/publicip.sh /usr/bin/publicip
+	ln -s /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/watchinternet.sh /usr/bin/watchinternet
+	ln -s /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/telegrambot.sh /usr/bin/telegrambot
+	ln -s /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/ipconfig.sh /usr/bin/ipconfig
+	ln -s /usr/share/fpms/BakeBit/Software/Python/scripts/networkinfo/portblinker.sh /usr/bin/portblinker
 }
 
 InstallMongoDB() {
