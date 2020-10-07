@@ -270,7 +270,7 @@ SetupOtherConfigFiles() {
 	copy_overlay /etc/default/crda -o root -g root -m 644
 
 	display_alert "Copy state file" "WLAN Pi Mode" "info"
-        copy_overlay /etc/wlanpi-state -o root -g root -m 644
+	copy_overlay /etc/wlanpi-state -o root -g root -m 644
 }
 
 InstallMongoDB() {
