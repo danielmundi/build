@@ -25,13 +25,18 @@ else # rk3308, rk3328
 
 fi
 
-if [[ $BOARD == nanopi-r2s || $BOARD == rockpi-e || $BOARD == nanopineo3 ]]; then
+if [[ $BOARD == nanopi-r2s || $BOARD == rockpi-e || $BOARD == nanopineo3 || $BOARD == renegade ]]; then
 
 	BOOT_USE_BLOBS=yes
 	BOOT_SOC=rk3328
 	DDR_BLOB='rk33/rk3328_ddr_333MHz_v1.16.bin'
 	MINILOADER_BLOB='rk33/rk322xh_miniloader_v2.50.bin'
-	BL31_BLOB='rk33/rk322xh_bl31_v1.42.elf'
+	BL31_BLOB='rk33/rk322xh_bl31_v1.44.elf'
+
+elif [[ $BOARD == rock64 ]]; then
+
+	BOOT_USE_MAINLINE_ATF=yes
+	BOOT_SOC=rk3328
 
 elif [[ $BOOTCONFIG == *3328* ]]; then
 
@@ -43,18 +48,11 @@ elif [[ $BOARD == pinebook-pro ]]; then
 	BOOT_SOC=rk3399
 	ATFPATCHDIR='atf-rk3399'
 
-elif [[ $BOARD == rockpi-4* ]]; then
+elif [[ $BOARD == rockpi-4* || $BOARD == rockpro64 ]]; then
 
-	BOOT_USE_BLOBS=yes
+	BOOT_USE_TPL_SPL_BLOB=yes
 	BOOT_SOC=rk3399
-	DDR_BLOB='rk33/rk3399_ddr_933MHz_v1.20.bin' # 1GB model does not boot with later versions
-	MINILOADER_BLOB='rk33/rk3399_miniloader_v1.19.bin'
 	BL31_BLOB='rk33/rk3399_bl31_v1.30.elf'
-
-elif [[ $BOARD == rockpro64 ]]; then
-
-	BOOT_RK3399_LEGACY_HYBRID=yes
-	BL31_BLOB='rk33/rk3399_bl31_v1.17.elf'
 
 elif [[ $BOARD == rockpi-s ]]; then
 
@@ -102,7 +100,7 @@ prepare_boot_configuration()
 		ATFDIR='arm-trusted-firmware'
 		ATFBRANCH='tag:v2.2'
 		ATF_USE_GCC='> 6.3'
-		ATF_TARGET_MAP='M0_CROSS_COMPILE=arm-linux-gnueabi- PLAT=rk3399 bl31;;build/rk3399/release/bl31/bl31.elf:bl31.bin'
+		ATF_TARGET_MAP="M0_CROSS_COMPILE=arm-linux-gnueabi- PLAT=$BOOT_SOC bl31;;build/$BOOT_SOC/release/bl31/bl31.elf:bl31.bin"
 		ATF_TOOLCHAIN2="arm-linux-gnueabi-:> 5.0"
 
 	elif [[ $BOOT_USE_TPL_SPL_BLOB == yes ]]; then
