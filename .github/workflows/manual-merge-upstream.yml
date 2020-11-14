@@ -1,0 +1,24 @@
+name: Manual Merge Remote Action
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to merge to'
+        required: true
+        default: 'dev'         # set the branch to merge to
+
+jobs:
+  merge-upstream:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.branch }}
+          fetch-depth: 0
+      - name: Merge Upstream
+        uses: exions/merge-upstream@v1
+        with:
+          upstream: armbian/build
+          upstream-branch: master
+          branch: ${{ github.event.inputs.branch }}
