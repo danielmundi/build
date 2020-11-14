@@ -22,3 +22,5 @@ jobs:
           upstream: armbian/build
           upstream-branch: master
           branch: ${{ github.event.inputs.branch }}
+          useremail: ${{ github.actor }}@users.noreply.github.com
+          username: ${{ github.actor }}
