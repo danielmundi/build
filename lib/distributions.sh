@@ -8,7 +8,6 @@
 
 # This file is a part of the Armbian build script
 # https://github.com/armbian/build/
-
 # Functions:
 # install_common
 # install_rclocal
@@ -212,7 +211,10 @@ install_common()
 	EOF
 
 	display_alert "Updating" "package lists"
-	chroot "${SDCARD}" /bin/bash -c "apt-get update" "${DEST}"/debug/install.log 2>&1
+	chroot "${SDCARD}" /bin/bash -c "apt-get update" >> "${DEST}"/debug/install.log 2>&1
+
+	display_alert "Temporarily disabling" "initramfs-tools hook for kernel"
+	chroot "${SDCARD}" /bin/bash -c "chmod -x /etc/kernel/postinst.d/initramfs-tools" >> "${DEST}"/debug/install.log 2>&1
 
 	# install family packages
 	if [[ -n ${PACKAGE_LIST_FAMILY} ]]; then
@@ -244,7 +246,8 @@ install_common()
 		chroot "${SDCARD}" /bin/bash -c "apt-get -qq -y install linux-u-boot-${BOARD}-${BRANCH}" >> "${DEST}"/debug/install.log 2>&1
 		# we need package later, move to output, apt-get must be here, apt deletes file
 		UPSTREM_VER=$(dpkg-deb -I "${SDCARD}"/var/cache/apt/archives/linux-u-boot-${BOARD}-${BRANCH}*_${ARCH}.deb | grep Version | awk '{print $(NF)}')
-		mv "${SDCARD}"/var/cache/apt/archives/linux-u-boot-${BOARD}-${BRANCH}*_${ARCH}.deb ${DEB_STORAGE}/${CHOSEN_UBOOT}_${UPSTREM_VER}_${ARCH}.deb
+		rsync -rq "${SDCARD}"/var/cache/apt/archives/linux-u-boot-${BOARD}-${BRANCH}*_${ARCH}.deb ${DEB_STORAGE}/${CHOSEN_UBOOT}_${UPSTREM_VER}_${ARCH}.deb
+		[[ $? -ne 0 ]] && exit_with_error "U-boot linux-u-boot-${BOARD}-${BRANCH}*_${ARCH}.deb download failed"
 	fi
 
 	# install kernel

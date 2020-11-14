@@ -17,9 +17,10 @@ create_board_package()
 {
 	display_alert "Creating board support package" "$BOARD $BRANCH" "info"
 
-	local destination=$SRC/.tmp/${RELEASE}/${CHOSEN_ROOTFS}_${REVISION}_${ARCH}
+	local destination=$(mktemp -d)/${RELEASE}/${CHOSEN_ROOTFS}_${REVISION}_${ARCH}
 	rm -rf "${destination}"
 	mkdir -p "${destination}"/DEBIAN
+	cd $destination
 
 	# install copy of boot script & environment file
 	local bootscript_src=${BOOTSCRIPT%%:*}
@@ -254,7 +255,7 @@ fi
 	#EOF
 
 	# copy common files from a premade directory structure
-	rsync -a "${SRC}"/packages/bsp/common/* "${destination}"/
+	rsync -a ${SRC}/packages/bsp/common/* ${destination}
 
 	# trigger uInitrd creation after installation, to apply
 	# /etc/initramfs/post-update.d/99-uboot
@@ -306,7 +307,7 @@ fi
 	display_alert "Building package" "$CHOSEN_ROOTFS" "info"
 	fakeroot dpkg-deb -b "${destination}" "${destination}.deb" >> "${DEST}"/debug/install.log 2>&1
 	mkdir -p "${DEB_STORAGE}/${RELEASE}/"
-	mv "${destination}.deb" "${DEB_STORAGE}/${RELEASE}/"
+	rsync -rq --delete-after "${destination}.deb" "${DEB_STORAGE}/${RELEASE}/"
 	# cleanup
 	rm -rf "${destination}"
 }
