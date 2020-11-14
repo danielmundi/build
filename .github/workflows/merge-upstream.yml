@@ -14,7 +14,7 @@ jobs:
           ref: dev             # set the branch to merge to
           fetch-depth: 0
       - name: Merge Upstream
-        uses: danielmundi/merge-upstream@v1
+        uses: danielmundi/merge-upstream@master
         with:
           upstream: armbian/build      # set the upstream repo
           upstream-branch: master   # set the upstream branch to merge from
