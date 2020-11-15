@@ -167,7 +167,7 @@ build_main ()
 		source "${SRC}"/lib/main.sh
 
 	fi
-
+	cd "${SRC}"
 	rm "/run/armbian/Armbian_${BOARD^}_${BRANCH}_${RELEASE}_${BUILD_DESKTOP}_${BUILD_MINIMAL}.pid"
 }
 
